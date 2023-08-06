@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    这个是显示的页面
+    <button id="ceshi">点击一下</button>
+  </body>
+  <script>
+    document.getElementById('ceshi').addEventListener('click',async ()=>{
+      const data = await ipc.invoke('/system/close', {
+        a:'a',
+        b:'b'
+      });
+      console.log(data);
+    });
+  </script>
+</html>

@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src","vite-plugin-electron.d.ts"],
+  "exclude": ["node_modules", "dist", "test/**/*", "*.spec.ts"],
+  "references": []
+}

@@ -1,0 +1,49 @@
+{
+  "name": "@electron-boot/vite-plugin-electron",
+  "version": "1.0.0-beta.4",
+  "description": "electron-boot vite-plugin-electron",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./*": "./*"
+  },
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "types": "tsc --emitDeclarationOnly -p tsconfig.build.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "vite-plugin-electron.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/electron-boot/electron-boot.git"
+  },
+  "keywords": [
+    "electron",
+    "bootstrap"
+  ],
+  "author": "electron-boot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/electron-boot/electron-boot/issues"
+  },
+  "homepage": "https://github.com/electron-boot/electron-boot#readme",
+  "dependencies": {
+    "nodemon": "^3.0.1",
+    "rollup": "^3.27.2",
+    "typescript": "5.2.0-dev.20230806",
+    "vite": "^4.4.8",
+    "vitest": "^0.34.1"
+  }
+}
