@@ -15,7 +15,6 @@
   },
   "keywords": [],
   "devDependencies": {
-    "@kayahr/jest-electron-runner": "^29.7.0",
     "@types/jest": "^29.5.3",
     "@types/node": "^20.4.6",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
@@ -31,7 +30,7 @@
     "prettier": "^3.0.1",
     "rimraf": "^5.0.1",
     "ts-jest": "^29.1.1",
-    "typescript": "5.2.0-dev.20230805"
+    "typescript": "5.2.0-dev.20230807"
   },
   "engines": {
     "node": ">=14",

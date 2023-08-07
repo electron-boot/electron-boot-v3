@@ -1,16 +1,11 @@
 {
+  "extends": "../../tsconfig.base.node.json",
+  "include": ["src","vite-plugin-electron.d.ts"],
+  "compileOnSave": true,
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "esModuleInterop": true,
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "strict": true,
-    "allowJs": true,
+    "outDir": "dist",
+    "preserveSymlinks": true,
     "declaration": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "outDir": "types"
-  },
+    "declarationMap": true
+  }
 }

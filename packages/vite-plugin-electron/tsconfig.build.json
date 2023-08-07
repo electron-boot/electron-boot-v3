@@ -1,6 +1,12 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.base.node.json",
   "include": ["src","vite-plugin-electron.d.ts"],
-  "exclude": ["node_modules", "dist", "test/**/*", "*.spec.ts"],
-  "references": []
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outDir": "dist",
+    "preserveSymlinks": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "exclude": ["node_modules/**", "dist", "test/**/*", "*.spec.ts"]
 }

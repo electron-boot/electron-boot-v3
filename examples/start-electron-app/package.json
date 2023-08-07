@@ -1,20 +1,17 @@
 {
-  "name": "@electron-boot/vite-plugin-electron",
+  "name": "start-electron-app",
   "version": "1.0.0-beta.4",
   "description": "electron-boot vite-plugin-electron",
   "sideEffects": false,
-  "main": "./dist/index.js",
+  "main": "./dist/electron/bootsrap.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "dev": "tsc -w --project tsconfig.build.json"
+    "dev": "vite serve",
+    "build": "vite build"
   },
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "dist",
-    "vite-plugin-electron.d.ts"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/electron-boot/electron-boot.git"
@@ -30,11 +27,8 @@
   },
   "homepage": "https://github.com/electron-boot/electron-boot#readme",
   "devDependencies": {
-    "@types/nodemon": "^1.19.2",
-    "nodemon": "^3.0.1",
-    "rollup": "^3.27.2",
-    "ts-node": "^10.9.1",
-    "vite": "^4.4.8",
-    "vitest": "^0.34.1"
+    "@electron-boot/vite-plugin-electron": "workspace:*",
+    "electron": "22.3.18",
+    "vite": "^4.4.8"
   }
 }

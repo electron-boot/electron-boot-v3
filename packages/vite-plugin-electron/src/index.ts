@@ -1,17 +1,47 @@
 import { type Plugin, UserConfig } from 'vite';
 import { resolveServerUrl } from './utils';
-
-export default function electron(): Plugin[] {
+import nodemon = require('nodemon');
+export interface ElectronOptions {
+  main: {
+    entry: string;
+    watch?: string[];
+  };
+}
+export default function electron(options: ElectronOptions): Plugin[] {
   const name = '@electron-boot/vite-plugin-electron';
   return [
     {
       name,
       apply: 'serve',
       configureServer(server) {
+        // 调试模式
         server.httpServer?.once('listening', () => {
           Object.assign(process.env, {
             VITE_DEV_SERVER_URL: resolveServerUrl(server),
           });
+          const electronPath = require('electron');
+          const runnerPath = require.resolve('./runner');
+          const execArgs = [electronPath, runnerPath, options.main.entry];
+          const exec = execArgs.join(' ');
+          nodemon.on('error', error => {
+            console.log(error);
+          });
+          nodemon({
+            spawn: true,
+            exec: exec,
+            watch: options?.main?.watch || [],
+          });
+          nodemon
+            .on('start', () => {
+              console.log('App has started');
+            })
+            .on('quit', () => {
+              console.log('App has quit');
+              process.exit();
+            })
+            .on('restart', files => {
+              console.log('App restarted due to: ', files);
+            });
         });
       },
     },
@@ -24,27 +54,3 @@ export default function electron(): Plugin[] {
     },
   ];
 }
-
-export async function startup(args: string[] = ['.', '--no-sandbox']) {
-  const { spawn } = await import('node:child_process');
-  const electronPath = require('electron');
-
-  startup.exit();
-
-  // Start Electron.app
-  process.electronApp = spawn(electronPath, args, { stdio: 'inherit' });
-  // Exit command after Electron.app exits
-  process.electronApp.once('exit', process.exit);
-
-  if (!startup.hookProcessExit) {
-    startup.hookProcessExit = true;
-    process.once('exit', startup.exit);
-  }
-}
-startup.hookProcessExit = false;
-startup.exit = () => {
-  if (process.electronApp) {
-    process.electronApp.removeAllListeners();
-    process.electronApp.kill();
-  }
-};
