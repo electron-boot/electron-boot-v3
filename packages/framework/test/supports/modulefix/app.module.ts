@@ -1,8 +1,8 @@
 import { UserService } from './user.service';
 import { AppConfig } from './config.default';
 import { Module } from '../../../src/decorators/module.decorator';
-import { IBrowserWindow } from '../../../src/interface/client.interface';
 import { Autowired } from '../../../src/decorators/autowired.decorator';
+import { IBrowserWindow } from '../../../src/interface/clients/browser.window.interface';
 
 @Module({
   providers: [UserService],

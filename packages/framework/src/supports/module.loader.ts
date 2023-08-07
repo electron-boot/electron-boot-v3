@@ -1,10 +1,10 @@
-import { IApplicationContext } from '../interface/context.interface';
-import { DynamicModule, Provider } from '../interface/metadata.interface';
-import { Type } from '../interface/common.interface';
+import { DynamicModule, Provider } from '../interface/decorator/metadata.interface';
 import { TypesUtil } from '../utils/types.util';
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
 import { Scope } from '../enums/enums';
 import { ConfigService } from './service/config.service';
+import { IApplicationContext } from '../interface/context/application.context.interface';
+import { Type } from '../interface/common';
 
 export class ModuleLoader {
   private loaded: WeakMap<any, boolean> = new WeakMap();

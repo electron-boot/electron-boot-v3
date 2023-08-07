@@ -1,7 +1,7 @@
 import { Singleton } from '../../decorators/singleton.decorator';
-import { DynamicRouterInfo, RouterInfo, RouterPriority } from '../../interface/router.interface';
+import { DynamicRouterInfo, RouterInfo, RouterPriority } from '../../interface/support/service/router.interface';
 import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
-import { ControllerOption, RouterOption } from '../../interface/metadata.interface';
+import { ControllerOption, RouterOption } from '../../interface/decorator/metadata.interface';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { RuntimeException } from '../../errors/exceptions/runtime.exception';
 import { TypesUtil } from '../../utils/types.util';

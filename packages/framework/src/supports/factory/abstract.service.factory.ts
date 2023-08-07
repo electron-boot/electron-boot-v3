@@ -1,4 +1,4 @@
-import { IServiceFactory } from '../../interface/support.interface';
+import { IServiceFactory } from '../../interface/support/support.interface';
 import { ObjectUtil } from '../../utils/object.util';
 
 export abstract class AbstractServiceFactory<T> implements IServiceFactory<T> {

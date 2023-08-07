@@ -4,7 +4,7 @@ import { Autowired } from '../../src/decorators/autowired.decorator';
 import { ApplicationContext } from '../../src/decorators/custom.decorator';
 import { Singleton } from '../../src/decorators/singleton.decorator';
 import { Construct, Init } from '../../src/decorators/definition.decorator';
-import { IApplicationContext } from '../../src/interface/context.interface';
+import { IApplicationContext } from '../../src/interface/context/application.context.interface';
 
 describe('/test/context/generic.application.context.test.ts', () => {
   it('should register object and get it', () => {

@@ -1,6 +1,7 @@
-import { BeanDefinition, IObjectCreatorDefinition } from '../../interface/beans.interface';
 import { TypesUtil } from '../../utils/types.util';
 import { UseWrongMethodException } from '../../errors/exceptions/use.wrong.method.exception';
+import { IObjectCreatorDefinition } from '../../interface/beans/definition/object.creator.definition';
+import { BeanDefinition } from '../../interface/beans/definition/bean.definition';
 
 export abstract class ObjectCreatorDefinition implements IObjectCreatorDefinition {
   protected definition: BeanDefinition;

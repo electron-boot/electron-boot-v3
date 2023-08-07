@@ -1,4 +1,4 @@
-import { IConfig } from '../../../src/interface/config.interface';
+import { IConfig } from '../../../src';
 
 export const AppConfig = (): IConfig => {
   const url = new URL('file://' + __dirname + '/../../html/index.html');

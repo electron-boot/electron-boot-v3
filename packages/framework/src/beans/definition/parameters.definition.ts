@@ -1,5 +1,6 @@
-import { Identifier } from '../../interface/common.interface';
-import { IMethodDefinition, IParametersDefinition } from '../../interface/beans.interface';
+import { IMethodDefinition } from '../../interface/beans/definition/method.definition';
+import { IParametersDefinition } from '../../interface/beans/definition/parameters.definition';
+import { Identifier } from '../../interface/common';
 
 export class ParametersDefinition extends Map<Identifier, any> implements IParametersDefinition {
   getParameter(name: Identifier, defaultValue?: IMethodDefinition): IMethodDefinition {

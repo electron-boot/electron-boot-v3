@@ -1,9 +1,9 @@
-import { ClassDecoratorFunction } from '../interface/decorators.interface';
-import { Identifier } from '../interface/common.interface';
+import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { Scope } from '../enums/enums';
 import { DecoratorUtil } from '../utils/decorator.util';
 import { TypesUtil } from '../utils/types.util';
 import { StringUtil } from '../utils/string.util';
+import { Identifier } from '../interface/common';
 export interface ProviderOptions {
   /**
    * identifier

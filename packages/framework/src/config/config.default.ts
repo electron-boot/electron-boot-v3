@@ -1,4 +1,4 @@
-import { IConfig } from '../interface/config.interface';
+import { IConfig } from '../interface/config';
 
 export default (): IConfig => {
   return {

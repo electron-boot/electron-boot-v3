@@ -30,5 +30,12 @@
     "@electron-boot/vite-plugin-electron": "workspace:*",
     "electron": "22.3.18",
     "vite": "^4.4.8"
+  },
+  "dependencies": {
+    "@electron-boot/framework": "workspace:*",
+    "@electron-boot/logger": "workspace:1.0.0-beta.4"
+  },
+  "engines": {
+    "node": ">=10"
   }
 }

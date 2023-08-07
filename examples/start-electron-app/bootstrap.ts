@@ -4,8 +4,8 @@ import { app } from 'electron';
 app.on('ready', async () => {
   const appReadyTime = new Date().getTime();
   console.log(`app ready time : ${appReadyTime}`);
-  const { Bootstrap } = require('../src/bootstrap');
-  const { AppModule } = require('./supports/demo/app.module');
+  const { Bootstrap } = require('@electron-boot/framework');
+  const { AppModule } = require('./electron/app');
   await Bootstrap.configure({
     imports: [AppModule],
   }).run();

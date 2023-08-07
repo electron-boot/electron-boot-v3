@@ -9,3 +9,4 @@ export * from './errors';
 export * from './interface';
 export * from './supports';
 export * from './utils';
+console.log('a');

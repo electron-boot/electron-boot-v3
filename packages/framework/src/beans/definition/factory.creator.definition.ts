@@ -1,5 +1,5 @@
 import { ObjectCreatorDefinition } from './object.creator.definition';
-import { IApplicationContext } from '../../interface/context.interface';
+import { IApplicationContext } from '../../interface/context/application.context.interface';
 
 export class FactoryCreatorDefinition extends ObjectCreatorDefinition {
   doConstruct(clazz: any, args?: any, context?: IApplicationContext): any {

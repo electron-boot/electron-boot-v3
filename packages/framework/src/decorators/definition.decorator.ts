@@ -1,4 +1,4 @@
-import { ClassMethodDecoratorFunction } from '../interface/decorators.interface';
+import { ClassMethodDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { DecoratorUtil } from '../utils/decorator.util';
 export interface ConstructDecorator {
   /**

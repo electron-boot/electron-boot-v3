@@ -1,12 +1,13 @@
-import { CreateDecoratorCallBack, DecoratorTarget, ModuleStore } from '../interface/decorators.interface';
-import { Decorator } from '../interface/common.interface';
+import { CreateDecoratorCallBack, DecoratorTarget, ModuleStore } from '../interface/decorator/decorators.interface';
+import { Decorator } from '../interface/common';
 import { SymbolMetadata } from './symbol.util';
 import { TypesUtil } from './types.util';
-import { FactoryInfoDefinition, IClassBeanDefinition, IObjectBeanDefinition } from '../interface/beans.interface';
-import { ClassBeanDefinition } from '../beans/definition/class.bean.definition';
-import { FactoryBeanDefinition } from '../beans/definition/factory.bean.definition';
-import { StringUtil } from './string.util';
 import { FieldsDefinition } from '../beans/definition/fields.definition';
+import { IObjectBeanDefinition } from '../interface/beans/definition/object.bean.definition';
+import { IClassBeanDefinition } from '../interface/beans/definition/class.bean.definition';
+import { FactoryInfoDefinition } from '../interface/beans/definition/factory.bean.info.definition';
+import { IFactoryBeanDefinition } from '../interface';
+import { ObjectBeanFactory } from '../beans/support/object.bean.factory';
 
 export class DecoratorName {
   static APPLICATION_CONTEXT = Symbol('application_context');
@@ -113,27 +114,13 @@ export class DecoratorUtil implements ModuleStore {
     return this.getDecoratorDataMap(this.getDecoratorMetadataObject(target))?.get(decorator);
   }
 
-  static classBeanDefinition(target: any): ClassBeanDefinition {
+  static classBeanDefinition(target: any): IClassBeanDefinition {
     if (this.isProvider(target)) return;
-    const beanDefinition = new ClassBeanDefinition();
-    if (target.kind) {
-      beanDefinition.decoratorMetadataObject = target.metadata;
-    } else {
-      beanDefinition.target = target;
-      beanDefinition.name = StringUtil.camelCase(target.name);
-      beanDefinition.originName = target.name;
-    }
-    beanDefinition.id = StringUtil.generateUUID();
-    return beanDefinition;
+    return ObjectBeanFactory.classBeanDefinition(target);
   }
-  static factoryBeanDefinition(target: any): FactoryBeanDefinition {
+  static factoryBeanDefinition(target: any): IFactoryBeanDefinition {
     if (this.isProvider(target)) return;
-    const beanDefinition = new FactoryBeanDefinition();
-    beanDefinition.id = StringUtil.generateUUID();
-    beanDefinition.target = target;
-    beanDefinition.name = StringUtil.camelCase(target.name);
-    beanDefinition.originName = target.name;
-    return beanDefinition;
+    return ObjectBeanFactory.factoryBeanDefinition(target);
   }
   static saveBeanDefinition(target: DecoratorTarget, beanDefinition: IObjectBeanDefinition) {
     this.saveMetadata(target, DecoratorName.BEAN, beanDefinition);

@@ -3,14 +3,14 @@ import { Autowired } from '../../decorators/autowired.decorator';
 import { AspectService } from './aspect.service';
 import { ConfigService } from './config.service';
 import { DecoratorService } from './decorator.service';
-import { ISocket } from '../../interface/support.interface';
+import { ISocket } from '../../interface/support/support.interface';
 import { Init } from '../../decorators/definition.decorator';
 import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
 import { ALL } from '../../constant';
 import { WindowServiceFactory } from '../factory/window.service.factory';
-import { IApplicationContext } from '../../interface/context.interface';
 import { ApplicationContext } from '../../decorators/custom.decorator';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
+import { IApplicationContext } from '../../interface/context/application.context.interface';
 
 @Singleton()
 export class SocketService {

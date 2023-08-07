@@ -1,7 +1,7 @@
 import { GenericApplicationContext } from './generic.application.context';
-import { IApplicationContext } from '../interface/context.interface';
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
 import { ArrayUtil } from '../utils/array.util';
+import { IApplicationContext } from '../interface/context/application.context.interface';
 
 export class RequestApplicationContext extends GenericApplicationContext {
   private readonly applicationContext: IApplicationContext;

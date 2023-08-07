@@ -6,8 +6,5 @@
     "target": "ES2022",
     "moduleResolution": "node",
     "types": ["node"]
-  },
-  "ts-node": {
-    "files": true
   }
 }

@@ -1,8 +1,8 @@
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
-import { BootstrapOptions } from '../interface/bootstrap.interface';
+import { BootstrapOptions } from '../interface/bootstrap/bootstrap.interface';
 import { Application } from './application';
 import * as process from 'process';
-import { IApplicationContext } from '../interface/context.interface';
+import { IApplicationContext } from '../interface/context/application.context.interface';
 
 export class Bootstrap {
   protected static application: Application;

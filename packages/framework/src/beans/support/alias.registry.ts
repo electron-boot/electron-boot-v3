@@ -1,5 +1,6 @@
-import { IAliasRegistry, IObjectBeanDefinition } from '../../interface/beans.interface';
-import { Identifier } from '../../interface/common.interface';
+import { IAliasRegistry } from '../../interface/beans/support/alias.registry';
+import { IObjectBeanDefinition } from '../../interface/beans/definition/object.bean.definition';
+import { Identifier } from '../../interface/common';
 
 export class AliasRegistry implements IAliasRegistry {
   private aliases: Map<Identifier, Identifier> = new Map();

@@ -1,5 +1,5 @@
-import { Controller } from '../../../src/decorators/controller.decorator';
-import { Action } from '../../../src/decorators/action.decorator';
+import { Controller } from '../../../src';
+import { Action } from '../../../src';
 
 @Controller('/system')
 export class System {

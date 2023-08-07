@@ -1,12 +1,12 @@
 import { Singleton } from '../../decorators/singleton.decorator';
-import { AppInfo } from '../../interface/support.interface';
+import { AppInfo } from '../../interface/support/support.interface';
 import { EnvironmentService } from './environment.service';
 import { Autowired } from '../../decorators/autowired.decorator';
-import { InformationService } from './information.service';
-import { IApplicationContext } from '../../interface/context.interface';
 import { Destroy, Init } from '../../decorators/definition.decorator';
 import { ObjectUtil } from '../../utils/object.util';
 import { TypesUtil } from '../../utils/types.util';
+import { IApplicationContext } from '../../interface/context/application.context.interface';
+import { app } from 'electron';
 
 interface ConfigMergeInfo {
   value: any;
@@ -30,19 +30,15 @@ export class ConfigService {
   @Autowired()
   environmentService: EnvironmentService;
 
-  @Autowired()
-  informationService: InformationService;
-
   @Autowired('rootContext')
   readonly applicationContext: IApplicationContext;
 
   @Init()
   init() {
     this.appInfo = {
-      name: this.informationService.getName(),
-      version: this.informationService.getVersion(),
-      description: this.informationService.getDescription(),
-      HOME: this.informationService.getUserHome(),
+      name: app.getName(),
+      version: app.getVersion(),
+      HOME: app.getPath('home'),
       env: this.environmentService.getEnvironment(),
     } as AppInfo;
   }

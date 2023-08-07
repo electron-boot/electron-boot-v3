@@ -3,10 +3,12 @@ import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { Autowired } from '../../decorators/autowired.decorator';
 import { ConfigService } from './config.service';
 import { SocketService } from './socket.service';
-import { IApplicationContext, ILifecycle, IObjectLifecycle } from '../../interface/context.interface';
 import { Init } from '../../decorators/definition.decorator';
 import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
-import { IBrowserWindow } from '../../interface/client.interface';
+import { IApplicationContext } from '../../interface/context/application.context.interface';
+import { ILifecycle } from '../../interface/context/lifecycle.interface';
+import { IObjectLifecycle } from '../../interface/context/object.lifecycle.interface';
+import { IBrowserWindow } from '../../interface/clients/browser.window.interface';
 
 @Singleton()
 export class LifecycleService {

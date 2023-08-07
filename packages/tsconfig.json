@@ -1,12 +1,12 @@
 {
   "files": [],
   "references": [
-//    {
-//      "path": "./logger/tsconfig.build.json"
-//    },
-//    {
-//      "path": "./framework/tsconfig.build.json"
-//    },
+    {
+      "path": "./logger/tsconfig.build.json"
+    },
+    {
+      "path": "./framework/tsconfig.build.json"
+    },
     {
       "path": "./vite-plugin-electron/tsconfig.build.json"
     }

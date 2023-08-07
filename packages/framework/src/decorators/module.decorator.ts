@@ -1,6 +1,6 @@
-import { ClassDecoratorFunction } from '../interface/decorators.interface';
+import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
-import { ModuleMetadata } from '../interface/metadata.interface';
+import { ModuleMetadata } from '../interface/decorator/metadata.interface';
 
 export interface ModuleDecorator {
   /**

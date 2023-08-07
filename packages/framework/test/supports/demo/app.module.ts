@@ -1,9 +1,9 @@
 import { AppConfig } from './config.default';
-import { Module } from '../../../src/decorators/module.decorator';
-import { Autowired } from '../../../src/decorators/autowired.decorator';
-import { IBrowserWindow } from '../../../src/interface/client.interface';
-import { Init } from '../../../src/decorators/definition.decorator';
+import { Module } from '../../../src';
+import { Autowired } from '../../../src';
+import { Init } from '../../../src';
 import { System } from './system.conteroller';
+import { IBrowserWindow } from '../../../src';
 @Module({
   providers: [System],
   configs: [{ default: AppConfig }],

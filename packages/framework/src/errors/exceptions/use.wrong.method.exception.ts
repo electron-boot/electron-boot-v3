@@ -1,6 +1,6 @@
 import { RuntimeException } from './runtime.exception';
-import { Identifier } from '../../interface/common.interface';
 import { USE_WRONG_METHOD_MESSAGE } from '../message';
+import { Identifier } from '../../interface/common';
 
 export class UseWrongMethodException extends RuntimeException {
   constructor(wrongMethod: string, replacedMethod: string, describeKey?: Identifier) {

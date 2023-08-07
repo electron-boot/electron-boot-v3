@@ -1,6 +1,5 @@
 import { AppModule } from './modulefix/app.module';
 import { GenericApplicationContext } from '../../src/context/generic.application.context';
-import { InformationService } from '../../src/supports/service/information.service';
 import { EnvironmentService } from '../../src/supports/service/environment.service';
 import { ConfigService } from '../../src/supports/service/config.service';
 import { ModuleLoader } from '../../src/supports/module.loader';
@@ -17,7 +16,6 @@ export class Demo {
 describe('/test/support/module.loader.test.ts', () => {
   it('should ', () => {
     const context = new GenericApplicationContext();
-    context.register(InformationService);
     context.register(EnvironmentService);
     context.register(ConfigService);
     context.register(AspectService);

@@ -1,13 +1,14 @@
-import { ISocket } from '../../interface/support.interface';
+import { ISocket } from '../../interface/support/support.interface';
 import { Socket } from '../../decorators/socket.decorator';
 import { RouterService } from './router.service';
 import { Autowired } from '../../decorators/autowired.decorator';
 import { ipcMain, IpcMainEvent } from 'electron';
-import { Context, IApplicationContext } from '../../interface/context.interface';
 import { ApplicationContext } from '../../decorators/custom.decorator';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { PathUtil } from '../../utils/path.util';
 import { RequestApplicationContext } from '../../context/request.application.context';
+import { IApplicationContext } from '../../interface/context/application.context.interface';
+import { Context } from '../../interface/context/context.interface';
 
 @Socket()
 export class IpcService implements ISocket {

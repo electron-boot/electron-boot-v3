@@ -1,4 +1,4 @@
-import { Identifier } from '../interface/common.interface';
+import { Identifier } from '../interface/common';
 
 export const USE_WRONG_METHOD_MESSAGE = (wrongMethod: string, replacedMethod: string, describeKey?: Identifier) => {
   return describeKey

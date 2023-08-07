@@ -1,16 +1,5 @@
 import * as EventEmitter from 'node:events';
-import { IApplicationContext } from '../interface/context.interface';
-import {
-  BeanDefinition,
-  GetOptions,
-  IAliasRegistry,
-  IBeanDefinitionRegistry,
-  IClassBeanDefinition,
-  IFactoryBeanDefinition,
-  IObjectBeanDefinition,
-} from '../interface/beans.interface';
 import { ResolverFactoryManager } from '../supports/resolver.factory.manager';
-import { Identifier } from '../interface/common.interface';
 import { TypesUtil } from '../utils/types.util';
 import { ObjectUtil } from '../utils/object.util';
 import { Kind, ObjectLifeCycle, Scope } from '../enums/enums';
@@ -18,6 +7,14 @@ import { DecoratorUtil } from '../utils/decorator.util';
 import { ArrayUtil } from '../utils/array.util';
 import { NotFoundMethodException } from '../errors/exceptions/not.found.method.exception';
 import { DefinitionNotFoundException } from '../errors/exceptions/definition.not.found.exception';
+import { IAliasRegistry } from '../interface/beans/support/alias.registry';
+import { IBeanDefinitionRegistry } from '../interface/beans/support/bean.definition.registry';
+import { IObjectBeanDefinition } from '../interface/beans/definition/object.bean.definition';
+import { BeanDefinition } from '../interface/beans/definition/bean.definition';
+import { IFactoryBeanDefinition } from '../interface/beans/definition/factory.bean.definition';
+import { GetOptions } from '../interface/beans/definition/bean.factory';
+import { IApplicationContext } from '../interface/context/application.context.interface';
+import { Identifier } from '../interface/common';
 
 export abstract class AbstractApplicationContext implements IApplicationContext {
   private readonly _parent: IApplicationContext;
@@ -106,7 +103,7 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
 
   registerClass(identifier: Identifier, target: any, options?: Partial<IObjectBeanDefinition>): void {
     if (TypesUtil.isClass(target)) {
-      const beanDefinition = DecoratorUtil.getBeanDefinition(target, DecoratorUtil.classBeanDefinition(target) as IClassBeanDefinition);
+      const beanDefinition = DecoratorUtil.getBeanDefinition(target, DecoratorUtil.classBeanDefinition(target));
       if (identifier) {
         beanDefinition.alias.push(identifier);
       }

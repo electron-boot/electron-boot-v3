@@ -1,4 +1,4 @@
-import { Identifier } from './common.interface';
+import { Identifier } from '../../common';
 
 /**
  * 路由信息

@@ -1,6 +1,6 @@
 import { RuntimeException } from './runtime.exception';
 import { NOT_FOUND_MESSAGE } from '../message';
-import { Identifier } from '../../interface/common.interface';
+import { Identifier } from '../../interface/common';
 
 export class NotFoundMethodException extends RuntimeException {
   constructor(identifier: Identifier) {

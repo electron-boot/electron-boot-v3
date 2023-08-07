@@ -1,6 +1,6 @@
-import { Decorator, Identifier } from '../interface/common.interface';
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
-import { ClassFieldDecoratorFunction } from '../interface/decorators.interface';
+import { ClassFieldDecoratorFunction } from '../interface/decorator/decorators.interface';
+import { Decorator, Identifier } from '../interface/common';
 
 export const createCustomFieldDecorator = (decorator: Decorator, impl = false): any => {
   return DecoratorUtil.createDecorator((target: any, context: DecoratorContext, metadata: any = {}) => {

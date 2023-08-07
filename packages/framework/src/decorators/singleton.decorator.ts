@@ -1,8 +1,8 @@
-import { ClassDecoratorFunction } from '../interface/decorators.interface';
-import { Identifier } from '../interface/common.interface';
+import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { Provide, ProviderOptions } from './provide.decorator';
 import { DecoratorUtil } from '../utils/decorator.util';
 import { Scope } from '../enums/enums';
+import { Identifier } from '../interface/common';
 
 export interface SingletonDecorator {
   /**

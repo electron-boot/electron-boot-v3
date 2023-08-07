@@ -2,11 +2,11 @@ import { AbstractServiceFactory } from './abstract.service.factory';
 import { Singleton } from '../../decorators/singleton.decorator';
 import { Autowired } from '../../decorators/autowired.decorator';
 import { ConfigService } from '../service/config.service';
-import { IApplicationContext } from '../../interface/context.interface';
 import { ApplicationContext } from '../../decorators/custom.decorator';
 import { Init } from '../../decorators/definition.decorator';
-import { IBrowserWindow } from '../../interface/client.interface';
 import { WindowClient } from '../client/window.client';
+import { IApplicationContext } from '../../interface/context/application.context.interface';
+import { IBrowserWindow } from '../../interface/clients/browser.window.interface';
 
 @Singleton()
 export class WindowServiceFactory extends AbstractServiceFactory<IBrowserWindow> {

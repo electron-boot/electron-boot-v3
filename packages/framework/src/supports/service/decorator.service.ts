@@ -1,14 +1,15 @@
 import { Singleton } from '../../decorators/singleton.decorator';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { Init } from '../../decorators/definition.decorator';
-import { IApplicationContext } from '../../interface/context.interface';
 import { Autowired } from '../../decorators/autowired.decorator';
 import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
 import { RuntimeException } from '../../errors/exceptions/runtime.exception';
 import { AspectService } from './aspect.service';
-import { IClassBeanDefinition, IFieldDefinition } from '../../interface/beans.interface';
-import { HandlerFunction, MethodHandlerFunction } from '../../interface/support.interface';
-import { ClassType } from '../../interface/common.interface';
+import { HandlerFunction, MethodHandlerFunction } from '../../interface/support/support.interface';
+import { ClassType } from '../../interface/common';
+import { IClassBeanDefinition } from '../../interface/beans/definition/class.bean.definition';
+import { IFieldDefinition } from '../../interface/beans/definition/field.definition';
+import { IApplicationContext } from '../../interface/context/application.context.interface';
 @Singleton()
 export class DecoratorService {
   private propertyHandlerMap = new Map<string | symbol, HandlerFunction>();

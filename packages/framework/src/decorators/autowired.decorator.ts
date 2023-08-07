@@ -1,10 +1,10 @@
-import { ClassFieldDecoratorFunction, ClassMethodDecoratorFunction, ProviderIdentifier } from '../interface/decorators.interface';
+import { ClassFieldDecoratorFunction, ClassMethodDecoratorFunction, ProviderIdentifier } from '../interface/decorator/decorators.interface';
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
 import { DecoratorNotValidException } from '../errors/exceptions/decorator.not.valid.exception';
-import { AutowiredFieldMetadata } from '../interface/metadata.interface';
+import { AutowiredFieldMetadata } from '../interface/decorator/metadata.interface';
 import { TypesUtil } from '../utils/types.util';
 import { InjectMode } from '../enums/enums';
-import { IFieldDefinition } from '../interface/beans.interface';
+import { IFieldDefinition } from '../interface/beans/definition/field.definition';
 export interface AutowiredOptions {
   /**
    * The provider of the provider to Autowired.

@@ -5,7 +5,6 @@ export * from './service/aspect.service';
 export * from './service/config.service';
 export * from './service/decorator.service';
 export * from './service/environment.service';
-export * from './service/information.service';
 export * from './service/ipc.service';
 export * from './service/lifecycle.service';
 export * from './service/router.service';

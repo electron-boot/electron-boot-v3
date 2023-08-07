@@ -1,14 +1,16 @@
-import { IApplicationContext } from '../interface/context.interface';
-import { Identifier } from '../interface/common.interface';
-import { ResolveFactory, ResolveOptions } from '../interface/support.interface';
+import { ResolveFactory, ResolveOptions } from '../interface/support/support.interface';
 import { InjectMode, Kind, ObjectLifeCycle } from '../enums/enums';
 import { MissingImportException } from '../errors/exceptions/missing.import.exception';
-import { BeanDefinition, IFieldDefinition, IObjectBeanDefinition } from '../interface/beans.interface';
 import { DefinitionNotFoundException } from '../errors/exceptions/definition.not.found.exception';
 import { ResolverMissingException } from '../errors/exceptions/resolver.missing.exception';
 import { SingletonInjectRequestException } from '../errors/exceptions/singleton.inject.request.exception';
 import { DecoratorName } from '../utils/decorator.util';
-import { AutowiredFieldMetadata } from '../interface/metadata.interface';
+import { AutowiredFieldMetadata } from '../interface/decorator/metadata.interface';
+import { BeanDefinition } from '../interface/beans/definition/bean.definition';
+import { IFieldDefinition } from '../interface/beans/definition/field.definition';
+import { IObjectBeanDefinition } from '../interface/beans/definition/object.bean.definition';
+import { IApplicationContext } from '../interface/context/application.context.interface';
+import { Identifier } from '../interface/common';
 export class RefResolver implements ResolveFactory {
   static NAME = 'ref';
   readonly factory: ResolverFactoryManager;

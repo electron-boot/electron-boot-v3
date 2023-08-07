@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "dev": "nodemon --watch src/**/*.js --exec \"electron\" ./test/index.ts"
+    "dev": "nodemon --watch src/* --exec \"electron\" ./test/index.ts"
   },
   "publishConfig": {
     "access": "public"

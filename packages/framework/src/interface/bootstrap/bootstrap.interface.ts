@@ -1,6 +1,6 @@
-import { Type } from './common.interface';
-import { DynamicModule } from './metadata.interface';
-import { IApplicationContext } from './context.interface';
+import { Type } from '../common';
+import { DynamicModule } from '../decorator/metadata.interface';
+import { IApplicationContext } from '../context/application.context.interface';
 
 export interface BootstrapOptions<T = any> {
   /**

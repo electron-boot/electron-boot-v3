@@ -1,8 +1,8 @@
 import { AbstractApplicationContext } from './abstract.application.context';
 import { ResolverFactoryManager } from '../supports/resolver.factory.manager';
-import { IBeanDefinitionRegistry } from '../interface/beans.interface';
-import { IApplicationContext } from '../interface/context.interface';
 import { BeanDefinitionRegistry } from '../beans/support/bean.definition.registry';
+import { IBeanDefinitionRegistry } from '../interface/beans/support/bean.definition.registry';
+import { IApplicationContext } from '../interface/context/application.context.interface';
 
 export class GenericApplicationContext extends AbstractApplicationContext {
   private _registry: IBeanDefinitionRegistry;

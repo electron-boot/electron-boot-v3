@@ -1,8 +1,9 @@
-import { IObjectBeanDefinition, IObjectCreatorDefinition } from '../../interface/beans.interface';
 import { Kind, Scope } from '../../enums/enums';
-import { Identifier } from '../../interface/common.interface';
-import { DecoratorUtil } from '../../utils/decorator.util';
+import { IObjectBeanDefinition } from '../../interface/beans/definition/object.bean.definition';
+import { IObjectCreatorDefinition } from '../../interface/beans/definition/object.creator.definition';
 import { StringUtil } from '../../utils/string.util';
+import { DecoratorUtil } from '../../utils';
+import { Identifier } from '../../interface/common';
 
 export abstract class ObjectBeanDefinition implements IObjectBeanDefinition {
   id: string = StringUtil.generateUUID();

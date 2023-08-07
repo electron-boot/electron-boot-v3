@@ -1,5 +1,5 @@
-import { InjectMode } from '../enums/enums';
-import { ClassType, Identifier, Type } from './common.interface';
+import { InjectMode } from '../../enums/enums';
+import { ClassType, Identifier, Type } from '../common';
 export interface FieldAccessMetadata<This = unknown, Value = unknown> {
   /**
    * Determines whether an object has a property with the same name as the decorated element.

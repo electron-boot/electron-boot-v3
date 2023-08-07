@@ -1,8 +1,9 @@
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
 import { Singleton } from './singleton.decorator';
 import { ProviderOptions } from './provide.decorator';
-import { ClassDecoratorFunction } from '../interface/decorators.interface';
-import { Identifier } from '../interface/common.interface';
+import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
+import { Identifier } from '../interface/common';
+
 export interface SocketDecorator {
   /**
    * injectable decorator

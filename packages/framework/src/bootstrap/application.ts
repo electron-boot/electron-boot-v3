@@ -1,5 +1,4 @@
-import { BootstrapOptions } from '../interface/bootstrap.interface';
-import { IApplicationContext } from '../interface/context.interface';
+import { BootstrapOptions } from '../interface/bootstrap/bootstrap.interface';
 import { SocketService } from '../supports/service/socket.service';
 import { LifecycleService } from '../supports/service/lifecycle.service';
 import { DecoratorUtil } from '../utils/decorator.util';
@@ -7,7 +6,6 @@ import * as util from 'util';
 import { GenericApplicationContext } from '../context/generic.application.context';
 import { ModuleLoader } from '../supports/module.loader';
 import { EnvironmentService } from '../supports/service/environment.service';
-import { InformationService } from '../supports/service/information.service';
 import { AspectService } from '../supports/service/aspect.service';
 import { DecoratorService } from '../supports/service/decorator.service';
 import { ConfigService } from '../supports/service/config.service';
@@ -16,6 +14,7 @@ import defaultConfig from '../config/config.default';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { WindowServiceFactory } from '../supports/factory/window.service.factory';
 import { RouterService } from '../supports/service/router.service';
+import { IApplicationContext } from '../interface/context/application.context.interface';
 let stepIdx = 1;
 export class Application {
   protected globalOptions: Partial<BootstrapOptions> = {};
@@ -49,7 +48,6 @@ export class Application {
     this.printStepDebugInfo('Binding inner service');
     // bind inner service
     applicationContext.register(EnvironmentService);
-    applicationContext.register(InformationService);
     applicationContext.register(AspectService);
     applicationContext.register(DecoratorService);
     applicationContext.register(ConfigService);

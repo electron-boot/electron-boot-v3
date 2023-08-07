@@ -1,6 +1,6 @@
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
-import { RouterOption } from '../interface/metadata.interface';
-import { ClassMethodDecoratorFunction } from '../interface/decorators.interface';
+import { RouterOption } from '../interface/decorator/metadata.interface';
+import { ClassMethodDecoratorFunction } from '../interface/decorator/decorators.interface';
 export interface ActionDecorator {
   /**
    * injectable decorator

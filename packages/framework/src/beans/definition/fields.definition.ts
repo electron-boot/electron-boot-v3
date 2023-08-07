@@ -1,5 +1,6 @@
-import { Identifier } from '../../interface/common.interface';
-import { IFieldDefinition, IFieldsDefinition } from '../../interface/beans.interface';
+import { IFieldsDefinition } from '../../interface/beans/definition/fields.definition';
+import { IFieldDefinition } from '../../interface/beans/definition/field.definition';
+import { Identifier } from '../../interface/common';
 
 export class FieldsDefinition extends Map<Identifier, any> implements IFieldsDefinition {
   fieldKeys(): Identifier[] {

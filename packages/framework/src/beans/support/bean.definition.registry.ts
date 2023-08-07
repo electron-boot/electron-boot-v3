@@ -1,6 +1,8 @@
-import { BeanDefinition, IAliasRegistry, IBeanDefinitionRegistry } from '../../interface/beans.interface';
-import { Identifier } from '../../interface/common.interface';
 import { AliasRegistry } from './alias.registry';
+import { IBeanDefinitionRegistry } from '../../interface/beans/support/bean.definition.registry';
+import { IAliasRegistry } from '../../interface/beans/support/alias.registry';
+import { BeanDefinition } from '../../interface/beans/definition/bean.definition';
+import { Identifier } from '../../interface/common';
 
 export class BeanDefinitionRegistry implements IBeanDefinitionRegistry {
   private _aliasRegistry: IAliasRegistry;

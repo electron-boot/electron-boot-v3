@@ -1,6 +1,5 @@
 import { RuntimeException } from './runtime.exception';
-import { Identifier } from '../../interface/common.interface';
-
+import { Identifier } from '../../interface/common';
 export class DefinitionNotFoundException extends RuntimeException {
   static readonly type = Symbol.for('#NotFoundError');
   static isClosePrototypeOf(ins: DefinitionNotFoundException): boolean {

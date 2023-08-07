@@ -1,6 +1,6 @@
-import { IBrowserWindow, BrowserWindowOptions } from '../../interface/client.interface';
 import { BrowserWindow } from 'electron';
 import * as events from 'events';
+import { BrowserWindowOptions, IBrowserWindow } from '../../interface/clients/browser.window.interface';
 const windowEvents = [
   'close',
   'closed',

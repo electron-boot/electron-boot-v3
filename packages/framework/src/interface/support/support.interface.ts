@@ -1,5 +1,5 @@
-import { InjectMode } from '../enums/enums';
-import { ClassType } from './common.interface';
+import { InjectMode } from '../../enums/enums';
+import { ClassType } from '../common';
 
 export interface ResolveOptions {
   type: string;
@@ -17,7 +17,6 @@ export interface ResolveFactory {
 export interface AppInfo {
   name: string;
   version: string;
-  description: string;
   HOME: string;
   env: string;
 }

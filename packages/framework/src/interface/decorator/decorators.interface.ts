@@ -1,4 +1,4 @@
-import { ClassType, Decorator, Identifier } from './common.interface';
+import { ClassType, Decorator, Identifier } from '../common';
 
 export type CreateDecoratorCallBack = (target: any, context: DecoratorContext, ...args: any[]) => any;
 

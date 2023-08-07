@@ -1,7 +1,7 @@
-import { ControllerOption, RouterOptions } from '../interface/metadata.interface';
+import { ControllerOption, RouterOptions } from '../interface/decorator/metadata.interface';
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
 import { Singleton } from './singleton.decorator';
-import { ClassDecoratorFunction } from '../interface/decorators.interface';
+import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 
 export interface ControllerDecorator {
   /**
