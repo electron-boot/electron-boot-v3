@@ -1,9 +1,8 @@
 import { AppInfo, IConfig } from '@electron-boot/framework';
 
-export default (a: AppInfo, b: any): IConfig => {
-  console.log(b);
+export default (appInfo: AppInfo): IConfig => {
   let urlStr: string;
-  if (a.env === 'development') {
+  if (appInfo.env === 'development') {
     urlStr = process.env.VITE_DEV_SERVER_URL as string;
   } else {
     const url = new URL('file://' + __dirname + '/../../html/index.html');
@@ -27,7 +26,7 @@ export default (a: AppInfo, b: any): IConfig => {
         aliasName: 'mainWindow',
         titleBarStyle: 'hidden',
         webPreferences: {
-          preload: __dirname + '/./preload.js',
+          preload: require.resolve('../../preload/main.preload'),
         },
       },
     },

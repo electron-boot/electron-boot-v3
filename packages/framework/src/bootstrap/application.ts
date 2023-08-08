@@ -139,7 +139,7 @@ export class Application {
     const lifecycleService = await applicationContext.getAsync(LifecycleService);
     await lifecycleService.stop();
     // stop applicationContext
-    applicationContext.close();
+    await applicationContext.close();
     // clear applicationContext
     global['ELECTRON_APPLICATION_CONTEXT'] = null;
   }

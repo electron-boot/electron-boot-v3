@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@electron-boot/framework": "workspace:*",
-    "@electron-boot/logger": "workspace:1.0.0-beta.4"
+    "@electron-boot/logger": "workspace:*"
   },
   "engines": {
     "node": ">=10"

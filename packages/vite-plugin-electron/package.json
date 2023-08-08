@@ -31,6 +31,8 @@
   "homepage": "https://github.com/electron-boot/electron-boot#readme",
   "devDependencies": {
     "@types/nodemon": "^1.19.2",
+    "chokidar": "^3.5.3",
+    "minimatch": "^9.0.3",
     "nodemon": "^3.0.1",
     "rollup": "^3.27.2",
     "ts-node": "^10.9.1",

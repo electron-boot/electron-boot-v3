@@ -1,11 +1,29 @@
-import { type Plugin, UserConfig } from 'vite';
+import { type Plugin, UserConfig, WatchOptions } from 'vite';
 import { resolveServerUrl } from './utils';
+import { spawn } from 'child_process';
+const chokidar = require('chokidar');
+const electronPath = require('electron');
+import path from 'path';
 export interface ElectronOptions {
   main: {
     entry: string;
-    watch?: string[];
+    watch?: WatchOptions;
   };
 }
+const defaultWatchOptions = {
+  ignored: ['**/.git/**', '**/node_modules/**'],
+  ignoreInitial: true,
+  ignorePermissionErrors: true,
+  disableGlobbing: true,
+  persistent: true,
+  interval: 100,
+  binaryInterval: 300,
+  enableBinaryInterval: true,
+  useFsEvents: true,
+  atomic: false,
+  followSymlinks: true,
+  awaitWriteFinish: false,
+};
 export default function electron(options: ElectronOptions): Plugin[] {
   const name = '@electron-boot/vite-plugin-electron';
   return [
@@ -18,36 +36,13 @@ export default function electron(options: ElectronOptions): Plugin[] {
           Object.assign(process.env, {
             VITE_DEV_SERVER_URL: resolveServerUrl(server),
           });
-          const electronPath = require('electron');
+          const watchDir = path.resolve(process.cwd(), path.dirname(options.main.entry));
+          const watchOptions = Object.assign({}, defaultWatchOptions, options.main.watch);
           const runnerPath = require.resolve('./runner');
-          const nodemon = require('nodemon');
-          nodemon.on('error', error => {
-            console.log(error);
-          });
-          const opts = {
-            scriptPosition: 0,
-            spawn: true,
-            script: runnerPath,
-            exec: electronPath,
-            watch: ['./electron/*'],
-            args: [options.main.entry],
-          };
-          nodemon(opts);
-          nodemon
-            .on('start', () => {
-              console.log('App has started');
-            })
-            .on('quit', () => {
-              console.log('App has quit');
-              process.exit();
-            })
-            .on('restart', files => {
-              console.log('App restarted due to: ', files);
-            });
-          server.watcher.add('./electron/*');
-          server.watcher.on('change', path => {
-            console.log('change…………………………………………………………………………………');
-            nodemon.emit('restart', [path]);
+          const startup = createStartup([runnerPath, options.main.entry]);
+          startup();
+          chokidar.watch(watchDir, watchOptions).on('change', () => {
+            startup();
           });
         });
       },
@@ -61,3 +56,26 @@ export default function electron(options: ElectronOptions): Plugin[] {
     },
   ];
 }
+
+export const createStartup = (argv: string[]): (() => void) => {
+  return () => startup(argv);
+};
+export async function startup(argv = ['.', '--no-sandbox']) {
+  startup.exit();
+  // Start Electron.app
+  process.electronApp = spawn(electronPath, argv, { stdio: 'inherit' });
+  // Exit command after Electron.app exits
+  process.electronApp.once('exit', process.exit);
+
+  if (!startup.hookProcessExit) {
+    startup.hookProcessExit = true;
+    process.once('exit', startup.exit);
+  }
+}
+startup.hookProcessExit = false;
+startup.exit = () => {
+  if (process.electronApp) {
+    process.electronApp.removeAllListeners();
+    process.electronApp.kill();
+  }
+};

@@ -22,7 +22,6 @@ export class Bootstrap {
   static reset() {
     this.configured = false;
     this.application = null;
-    LoggerFactory.destroy();
   }
 
   /**
@@ -81,6 +80,8 @@ export class Bootstrap {
     } catch (err) {
       this.logger.error('close with error: ', err);
       process.exit(1);
+    } finally {
+      LoggerFactory.destroy();
     }
   }
   /**

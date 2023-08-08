@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <title>Title</title>
+</head>
+<body>
+  electron + typescript + vite
+  <button id="ceshi">点击一下</button>
+</body>
+<script>
+  document.getElementById('ceshi').addEventListener('click',async ()=>{
+    console.log(window.ipc);
+    const data = await window.ipc.invoke('/system/show-message', {
+      a:'a',
+      b:'b'
+    });
+    console.log(data);
+  });
+</script>
+</html>

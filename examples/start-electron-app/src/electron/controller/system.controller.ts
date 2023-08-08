@@ -5,8 +5,7 @@ import { LoggerFactory } from '@electron-boot/logger';
 export class SystemController {
   private logger = LoggerFactory.getLogger(SystemController);
   @Action('/show-message')
-  showMessage({ event, data }: any) {
-    console.log(data);
-    this.logger.info('这是当前的输出asd', event, data);
+  showMessage({ data }: any) {
+    console.log('这是当前的输出asd', data.a);
   }
 }

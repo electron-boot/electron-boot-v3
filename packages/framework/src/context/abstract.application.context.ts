@@ -136,10 +136,10 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
 
   ready(): void {}
 
-  close(): void {
+  async close(): Promise<void> {
+    await this.resolveFactoryManager.destroy();
     this.registry.clearAll();
     this.moduleMap = null;
-    this.resolveFactoryManager.destroy().then(() => {});
   }
 
   get<T>(identifier: { new (...args: any[]): T }, args?: any[], options?: GetOptions): T;

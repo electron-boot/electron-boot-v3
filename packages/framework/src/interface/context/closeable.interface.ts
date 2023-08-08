@@ -1,3 +1,3 @@
 export interface ICloseable {
-  close(): void;
+  close(): Promise<void> | void;
 }
