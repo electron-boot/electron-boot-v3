@@ -1,19 +1,15 @@
 {
-  "name": "@electron-boot/vite-plugin-electron",
+  "name": "@electron-boot/updater",
   "version": "1.0.0-beta.4",
-  "description": "electron-boot vite-plugin-electron",
+  "description": "electron-boot updater",
   "sideEffects": false,
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "scripts": {
-    "dev": "tsc -w --project tsconfig.build.json"
-  },
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "dist",
-    "vite-plugin-electron.d.ts"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -21,7 +17,8 @@
   },
   "keywords": [
     "electron",
-    "bootstrap"
+    "bootstrap",
+    "updater"
   ],
   "author": "electron-boot",
   "license": "MIT",
@@ -29,11 +26,11 @@
     "url": "https://github.com/electron-boot/electron-boot/issues"
   },
   "homepage": "https://github.com/electron-boot/electron-boot#readme",
+  "dependencies": {
+    "@electron-boot/framework": "workspace:*",
+    "electron-updater": "^6.1.1"
+  },
   "devDependencies": {
-    "rollup": "^3.27.2",
-    "ts-node": "^10.9.1",
-    "tsc-watch": "^6.0.4",
-    "vite": "^4.4.8",
-    "vitest": "^0.34.1"
+    "builder-util-runtime": "^9.2.1"
   }
 }

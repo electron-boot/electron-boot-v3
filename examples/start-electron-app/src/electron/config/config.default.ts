@@ -26,7 +26,7 @@ export default (appInfo: AppInfo): IConfig => {
         aliasName: 'mainWindow',
         titleBarStyle: 'hidden',
         webPreferences: {
-          preload: require.resolve('../../preload/main.preload'),
+          preload: require.resolve('../preload/main.preload'),
         },
       },
     },

@@ -30,11 +30,5 @@ export default defineConfig({
     minify: 'esbuild',
   },
   base: './',
-  plugins: [
-    electron({
-      main: {
-        entry: 'src/electron/bootstrap.ts',
-      },
-    }),
-  ],
+  plugins: [electron()],
 });

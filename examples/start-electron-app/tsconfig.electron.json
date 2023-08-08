@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/electron"],
+  "compilerOptions": {
+    "lib": ["ES2022","dom","decorators"],
+    "outDir": "dist/electron",
+    "baseUrl": "."
+  }
+}

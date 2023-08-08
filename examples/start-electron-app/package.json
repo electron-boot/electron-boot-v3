@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.4",
   "description": "electron-boot vite-plugin-electron",
   "sideEffects": false,
-  "main": "./dist/electron/bootsrap.js",
+  "main": "./dist/electron/bootstrap.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite serve",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "@electron-boot/vite-plugin-electron": "workspace:*",
     "electron": "22.3.18",
+    "typescript": "5.3.0-dev.20230808",
     "vite": "^4.4.8"
   },
   "dependencies": {

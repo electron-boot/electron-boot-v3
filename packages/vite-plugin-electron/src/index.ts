@@ -1,31 +1,25 @@
-import { type Plugin, UserConfig, WatchOptions } from 'vite';
+import { type Plugin } from 'vite';
+import { TscWatchClient } from 'tsc-watch/client';
 import { resolveServerUrl } from './utils';
 import { spawn } from 'child_process';
-const chokidar = require('chokidar');
+import * as fs from 'fs';
 const electronPath = require('electron');
-import path from 'path';
 export interface ElectronOptions {
-  main: {
-    entry: string;
-    watch?: WatchOptions;
-  };
+  project?: string;
+  compiler?: string;
 }
-const defaultWatchOptions = {
-  ignored: ['**/.git/**', '**/node_modules/**'],
-  ignoreInitial: true,
-  ignorePermissionErrors: true,
-  disableGlobbing: true,
-  persistent: true,
-  interval: 100,
-  binaryInterval: 300,
-  enableBinaryInterval: true,
-  useFsEvents: true,
-  atomic: false,
-  followSymlinks: true,
-  awaitWriteFinish: false,
-};
-export default function electron(options: ElectronOptions): Plugin[] {
+const watcher = new TscWatchClient();
+export default function electron(options: ElectronOptions = {}): Plugin[] {
   const name = '@electron-boot/vite-plugin-electron';
+  const tsconfigPath = options?.project ?? 'tsconfig.electron.json';
+  if (!fs.existsSync(tsconfigPath)) {
+    throw new Error(`tsconfig.electron.json not found in ${tsconfigPath}`);
+  }
+  const args = ['--project', tsconfigPath];
+  if (!options.compiler) {
+    options.compiler = 'typescript/bin/tsc';
+  }
+  args.push('--compiler', options.compiler);
   return [
     {
       name,
@@ -36,30 +30,25 @@ export default function electron(options: ElectronOptions): Plugin[] {
           Object.assign(process.env, {
             VITE_DEV_SERVER_URL: resolveServerUrl(server),
           });
-          const watchDir = path.resolve(process.cwd(), path.dirname(options.main.entry));
-          const watchOptions = Object.assign({}, defaultWatchOptions, options.main.watch);
-          const runnerPath = require.resolve('./runner');
-          const startup = createStartup([runnerPath, options.main.entry]);
-          startup();
-          chokidar.watch(watchDir, watchOptions).on('change', () => {
-            startup();
+          watcher.on('success', async () => {
+            await startup();
           });
+          watcher.start(...args);
         });
       },
     },
     {
       name,
       apply: 'build',
-      config(config: UserConfig, env) {
-        console.log(config, env);
+      async closeBundle() {
+        watcher.on('first_success', () => {
+          watcher.kill();
+        });
+        watcher.start(...args);
       },
     },
   ];
 }
-
-export const createStartup = (argv: string[]): (() => void) => {
-  return () => startup(argv);
-};
 export async function startup(argv = ['.', '--no-sandbox']) {
   startup.exit();
   // Start Electron.app
