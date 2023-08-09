@@ -1,15 +1,15 @@
 {
   "name": "@electron-boot/updater",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "electron-boot updater",
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "dist"
+    "lib"
   ],
   "repository": {
     "type": "git",
@@ -28,7 +28,9 @@
   "homepage": "https://github.com/electron-boot/electron-boot#readme",
   "dependencies": {
     "@electron-boot/framework": "workspace:*",
-    "electron-updater": "^6.1.1"
+    "@electron-boot/logger": "workspace:*",
+    "electron-updater": "^6.1.1",
+    "typed-emitter": "^2.1.0"
   },
   "devDependencies": {
     "builder-util-runtime": "^9.2.1"

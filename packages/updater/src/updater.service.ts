@@ -1,32 +1,80 @@
-import { Autowired, Config, IBrowserWindow, Init, Singleton } from '@electron-boot/framework';
+import { Autowired, Config, IBrowserWindow, Init, PlatformUtil, Singleton } from '@electron-boot/framework';
+import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { autoUpdater } from 'electron-updater';
-import { EventData } from './interface';
+import { AutoUpdate, EventData, EventType } from './interface';
+
 @Singleton()
 export class UpdaterService {
   private isReady = false;
+  private logger: ILogger = LoggerFactory.getLogger(UpdaterService);
   @Config('autoUpdater')
-  private updaterConfig: any;
+  private updaterConfig: AutoUpdate;
   @Autowired()
   private mainWindow: IBrowserWindow;
   @Init()
   async init() {
     if (this.isReady) return;
-    // 获取配置信息
-    const updateConfig = this.updaterConfig;
-    // 是否后台自动下载
-    autoUpdater.autoDownload = updateConfig.force;
-    // 设置下载地址
-    try {
-      autoUpdater.setFeedURL(updateConfig.options);
-    } catch (e) {
-      console.log('[autoUpdater] setFeedURL error', e);
+    if (
+      !(
+        (PlatformUtil.isWindows() && this.updaterConfig.windows) ||
+        (PlatformUtil.isMacOS() && this.updaterConfig.macOS) ||
+        (PlatformUtil.isLinux() && this.updaterConfig.linux)
+      )
+    ) {
+      return;
     }
-    autoUpdater.signals.progress(progressInfo => {
-      console.log(progressInfo);
+    try {
+      autoUpdater.setFeedURL(this.updaterConfig.options);
+    } catch (e) {
+      this.logger.error('setFeedURL error', e);
+    }
+    /**
+     * 正在检查更新
+     */
+    autoUpdater.on('checking-for-update', () => {
+      console.log('正在检查更新');
+      this.sendStatusToWindow({
+        eventType: EventType.checking,
+      });
     });
-    this.mainWindow.on('ready-to-show', async () => {
-      if (updateConfig.autoCheck) await this.checkUpdate();
+    autoUpdater.on('update-available', updateInfo => {
+      console.log('有更新');
+      this.sendStatusToWindow({
+        eventType: EventType.available,
+        updateInfo,
+      });
     });
+    autoUpdater.on('update-not-available', updateInfo => {
+      console.log('没有更新');
+      this.sendStatusToWindow({
+        eventType: EventType.noAvailable,
+        updateInfo,
+      });
+    });
+    autoUpdater.on('error', (error, message) => {
+      this.sendStatusToWindow({
+        eventType: EventType.error,
+        errorInfo: {
+          message: message,
+          error,
+        },
+      });
+    });
+    autoUpdater.on('download-progress', progressInfo => {
+      this.sendStatusToWindow({
+        eventType: EventType.progress,
+        progressInfo,
+      });
+    });
+    autoUpdater.on('update-downloaded', event => {
+      this.sendStatusToWindow({
+        eventType: EventType.progress,
+        downloadedInfo: event,
+      });
+      autoUpdater.quitAndInstall();
+    });
+    autoUpdater.autoDownload = this.updaterConfig.force;
+    if (this.updaterConfig.force) await this.checkUpdate();
     this.isReady = true;
   }
 
@@ -46,11 +94,11 @@ export class UpdaterService {
 
   /**
    * send message to main window
-   * @param context
+   * @param data
    * @private
    */
-  private sendStatusToWindow(context: EventData) {
-    const textJson = JSON.stringify(context);
+  private sendStatusToWindow(data: EventData) {
+    const textJson = JSON.stringify(data);
     const channel = '/system/appUpdater';
     this.mainWindow.getInstance()?.webContents?.send(channel, textJson);
   }

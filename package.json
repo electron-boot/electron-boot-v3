@@ -6,15 +6,22 @@
   "author": "electron-boot.com <876771120@qq.com>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "packageManager": "pnpm@7.4.1",
+  "engines": {
+    "node": ">=14",
+    "pnpm": ">=7"
+  },
   "scripts": {
+    "clear": "rimraf 'packages/*/{dist,node_modules}' && rimraf node_modules",
+    "test": "jest",
     "build": "tsc -b -v packages",
-    "test": "jest"
+    "version-packages": "changeset version",
+    "release": "pnpm build && pnpm release:only",
+    "release:only": "changeset publish --registry=https://registry.npmjs.com/"
   },
   "keywords": [],
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "@types/jest": "^29.5.3",
     "@types/node": "^20.4.6",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
@@ -31,10 +38,5 @@
     "rimraf": "^5.0.1",
     "ts-jest": "^29.1.1",
     "typescript": "5.2.0-dev.20230807"
-  },
-  "engines": {
-    "node": ">=14",
-    "pnpm": ">=7"
-  },
-  "packageManager": "pnpm@7.4.1"
+  }
 }

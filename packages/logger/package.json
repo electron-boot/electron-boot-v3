@@ -1,15 +1,15 @@
 {
   "name": "@electron-boot/logger",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "electron-boot logger",
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "dist"
+    "lib"
   ],
   "scripts": {
     "clean": "rimraf lib",

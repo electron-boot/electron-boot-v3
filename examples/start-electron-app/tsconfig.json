@@ -14,7 +14,6 @@
     "sourceMap": true,
     "allowJs": false,
     "resolveJsonModule": true,
-    "outDir": "dist",
-    "baseUrl": "."
+    "baseUrl": "./",
   }
 }

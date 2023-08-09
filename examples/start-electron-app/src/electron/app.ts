@@ -2,7 +2,6 @@ import { Autowired, IBrowserWindow, Init, Module } from '@electron-boot/framewor
 import { LoggerFactory } from '@electron-boot/logger';
 import { SystemController } from './controller/system.controller';
 import defaultConfig from './config/config.default';
-import { app } from 'electron';
 
 @Module({
   providers: [SystemController],

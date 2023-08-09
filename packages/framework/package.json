@@ -1,12 +1,16 @@
 {
   "name": "@electron-boot/framework",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "fast development framework for electron",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "lib",
+    "framework.d.ts"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/electron-boot/electron-boot.git"

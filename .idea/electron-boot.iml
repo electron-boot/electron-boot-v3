@@ -5,6 +5,11 @@
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/examples/start-electron-app/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/framework/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/logger/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/updater/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/vite-plugin-electron/lib" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -17,7 +17,6 @@ export const AppConfig = (): IConfig => {
       main: {
         show: false,
         url: url.href,
-        aliasName: 'mainWindow',
         titleBarStyle: 'hidden',
         webPreferences: {
           preload: __dirname + '/./preload.js',

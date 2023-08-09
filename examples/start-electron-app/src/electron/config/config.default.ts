@@ -23,12 +23,10 @@ export default (appInfo: AppInfo): IConfig => {
       main: {
         show: false,
         url: urlStr,
-        aliasName: 'mainWindow',
-        titleBarStyle: 'hidden',
         webPreferences: {
           preload: require.resolve('../preload/main.preload'),
         },
       },
     },
-  };
+  } as IConfig;
 };

@@ -8,10 +8,6 @@ export interface BrowserWindowOptions extends BrowserWindowConstructorOptions {
    * load url
    */
   url?: string;
-  /**
-   * browser window alias name
-   */
-  aliasName?: string;
 }
 export interface IBrowserWindow {
   /**

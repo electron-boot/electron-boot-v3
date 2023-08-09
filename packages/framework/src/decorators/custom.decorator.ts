@@ -59,7 +59,7 @@ export interface WindowDecorator {
    */
   (target: any, context: ClassFieldDecoratorContext): void;
 }
-export const Window = createCustomFieldDecorator(DecoratorName.WINDOW);
+export const Window: WindowDecorator = createCustomFieldDecorator(DecoratorName.WINDOW);
 
 export interface ConfigDecorator {
   /**
@@ -81,4 +81,4 @@ export interface ConfigDecorator {
    */
   (target: any, context: ClassFieldDecoratorContext): void;
 }
-export const Config = createCustomFieldDecorator(DecoratorName.CONFIG);
+export const Config: ConfigDecorator = createCustomFieldDecorator(DecoratorName.CONFIG);

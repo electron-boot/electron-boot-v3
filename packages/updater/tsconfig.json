@@ -3,7 +3,7 @@
   "include": ["src"],
   "compileOnSave": true,
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "lib",
     "preserveSymlinks": true,
     "declaration": true,
     "declarationMap": true

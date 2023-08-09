@@ -3,7 +3,6 @@
   "include": ["src","vite-plugin-electron.d.ts"],
   "compileOnSave": true,
   "compilerOptions": {
-    "outDir": "dist",
     "preserveSymlinks": true,
     "declaration": true,
     "declarationMap": true,

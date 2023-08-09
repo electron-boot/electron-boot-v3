@@ -9,6 +9,9 @@
     },
     {
       "path": "./vite-plugin-electron/tsconfig.build.json"
+    },
+    {
+      "path": "./updater/tsconfig.build.json"
     }
   ]
 }
