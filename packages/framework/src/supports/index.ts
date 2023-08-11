@@ -7,6 +7,6 @@ export * from './service/decorator.service';
 export * from './service/environment.service';
 export * from './service/ipc.service';
 export * from './service/lifecycle.service';
-export * from './service/router.service';
+export * from './service/event.service';
 export * from './service/socket.service';
 export * from './resolver.factory.manager';

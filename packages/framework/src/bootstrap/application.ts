@@ -13,7 +13,7 @@ import { IpcService } from '../supports/service/ipc.service';
 import defaultConfig from '../config/config.default';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { WindowServiceFactory } from '../supports/factory/window.service.factory';
-import { RouterService } from '../supports/service/router.service';
+import { EventService } from '../supports/service/event.service';
 import { IApplicationContext } from '../interface/context/application.context.interface';
 let stepIdx = 1;
 export class Application {
@@ -55,7 +55,7 @@ export class Application {
     applicationContext.register(SocketService);
     applicationContext.register(WindowServiceFactory);
     applicationContext.register(LifecycleService);
-    applicationContext.register(RouterService);
+    applicationContext.register(EventService);
 
     this.printStepDebugInfo('Binding preload module');
 

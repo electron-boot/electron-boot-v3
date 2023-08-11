@@ -117,17 +117,25 @@ export interface DynamicModule extends ModuleMetadata {
    */
   module: Type;
 }
-export interface RouterOption {
-  path?: string;
-  routerName?: string;
-  method?: string;
+
+export interface ControllerMetadata {
+  /**
+   * controller class name
+   */
+  controllerName: string;
+  /**
+   * controller custom name
+   */
+  customName?: string;
 }
-export interface RouterOptions {
-  sensitive?: boolean;
-  alias?: string[];
-  tagName?: string;
-}
-export interface ControllerOption {
-  prefix: string;
-  routerOptions: RouterOptions;
+
+export interface ActionMetadata {
+  /**
+   * action name
+   */
+  actionName: string;
+  /**
+   * action method name
+   */
+  customName?: string;
 }

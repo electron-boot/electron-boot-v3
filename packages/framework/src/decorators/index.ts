@@ -1,4 +1,4 @@
-export * from './action.decorator';
+export * from './event.decorator';
 export * from './autowired.decorator';
 export * from './controller.decorator';
 export * from './custom.decorator';

@@ -6,5 +6,5 @@ export * from './config';
 export * from './context';
 export * from './decorator/decorators.interface';
 export * from './decorator/metadata.interface';
-export * from './support/service/router.interface';
+export * from './support/service/event.interface';
 export * from './support/support.interface';

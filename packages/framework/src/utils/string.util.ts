@@ -173,4 +173,20 @@ export class StringUtil {
   static pascalCase(input: string): string {
     return this.camelCaseOrigin(input, true);
   }
+
+  /**
+   * convert string to kebab case string
+   * @export
+   * @param input
+   * @returns {string}
+   */
+  static kebabCase(input: string): string {
+    let temp = input.replace(/[A-Z]/g, i => {
+      return '-' + i.toLowerCase();
+    });
+    if (temp.slice(0, 1) === '-') {
+      temp = temp.slice(1);
+    }
+    return temp;
+  }
 }
