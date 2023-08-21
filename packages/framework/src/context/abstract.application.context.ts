@@ -112,7 +112,7 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
     }
   }
 
-  registerObject(identifier: any, target?: any): void {
+  registerObject(identifier: any, target?: any, replace?: boolean): void {
     if (!TypesUtil.isPlainObject(target) && target.constructor && TypesUtil.isClass(target.constructor)) {
       const definitionTarget = target.constructor;
       const beanDefinition = DecoratorUtil.getBeanDefinition(definitionTarget, DecoratorUtil.classBeanDefinition(definitionTarget));
@@ -125,9 +125,9 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
       beanDefinition.save();
       this.registerDefinition(beanDefinition);
       if (identifier) this.aliasRegistry.setAlias(identifier, beanDefinition.id);
-      identifier = beanDefinition.id;
+      if (!identifier) identifier = beanDefinition.id;
     }
-    if (identifier && !this.registry.hasObject(identifier)) {
+    if (identifier && (!this.registry.hasObject(identifier) || replace)) {
       this.registry.registerObject(identifier, target);
     }
   }

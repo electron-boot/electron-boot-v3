@@ -21,4 +21,10 @@ export interface Context {
    * @param key
    */
   getAttr<T>(key: string): T;
+
+  /**
+   * Check if app attribute map has key
+   * @param key
+   */
+  hasAttr(key: string): boolean;
 }

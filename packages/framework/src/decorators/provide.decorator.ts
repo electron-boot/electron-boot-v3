@@ -20,7 +20,7 @@ export interface ProvideDecorator {
    * @param injectableOption injectable options
    * @example
    * ```typescript
-   * @Injectable({ identifier: 'A', scope: Scope.Singleton })
+   * @provide({ identifier: 'A', scope: Scope.Singleton })
    * @param injectableOption
    */
   (injectableOption?: ProviderOptions): ClassDecoratorFunction<any, any, any>;
@@ -35,7 +35,7 @@ export interface ProvideDecorator {
    */
   (identifier?: Identifier): ClassDecoratorFunction<any, any, any>;
   /**
-   * injectable decorator
+   * provide decorator
    * @param identifier identifier
    * @param scope scope
    * @example

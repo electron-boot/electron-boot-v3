@@ -15,6 +15,7 @@ export interface ResolveFactory {
 }
 
 export interface AppInfo {
+  runnerPath: string;
   name: string;
   version: string;
   HOME: string;

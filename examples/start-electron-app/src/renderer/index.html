@@ -1,21 +1,21 @@
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <title>Title</title>
-</head>
-<body>
-  electron + typescript + vite
-  <button id="ceshi">点击一下</button>
-</body>
-<script>
-  document.getElementById('ceshi').addEventListener('click',async ()=>{
-    console.log(window.ipc);
-    const data = await window.ipc.invoke('/system-controller/show-message', {
-      a:'a',
-      b:'b'
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    electron + typescript + vite
+    <button id="ceshi">点击一下</button>
+    <button id="ceshi2">我还能再点击吗</button>
+  </body>
+  <script>
+    document.getElementById('ceshi').addEventListener('click', async () => {
+      const data = await window.ipc.invoke('/system-controller/show-message', 'hello');
+      console.log(data);
     });
-    console.log(data);
-  });
-</script>
+    document.getElementById('ceshi2').addEventListener('click', () => {
+      console.log("我点击了");
+    });
+  </script>
 </html>

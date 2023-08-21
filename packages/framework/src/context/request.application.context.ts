@@ -5,6 +5,8 @@ import { IApplicationContext } from '../interface/context/application.context.in
 
 export class RequestApplicationContext extends GenericApplicationContext {
   private readonly applicationContext: IApplicationContext;
+  private objectMap: Map<string, any> = new Map();
+  private attrMap: Map<string, any> = new Map();
   constructor(ctx: any, applicationContext: IApplicationContext) {
     super(applicationContext);
     this.applicationContext = applicationContext;
@@ -18,8 +20,27 @@ export class RequestApplicationContext extends GenericApplicationContext {
     this.registerObject('res', {});
   }
 
+  registerObject(identifier: any, target?: any, replace?: boolean) {
+    if (!this.objectMap) {
+      return super.registerObject(identifier, target, replace);
+    }
+    return this.objectMap.set(identifier, target);
+  }
+
   private getIdentifier(identifier: any): string {
     return DecoratorUtil.getBeanDefinition(identifier).id;
+  }
+
+  public setAttr(key: string, value) {
+    this.attrMap.set(key, value);
+  }
+
+  public getAttr<T>(key: string): T {
+    return this.attrMap.get(key);
+  }
+
+  public hasAttr(key: string): boolean {
+    return this.attrMap.has(key);
   }
 
   get<T = any>(identifier: any, args?: any): T {
@@ -27,7 +48,11 @@ export class RequestApplicationContext extends GenericApplicationContext {
       identifier = this.getIdentifier(identifier);
     }
 
-    if (this.registry.hasObject(identifier)) {
+    if (this.objectMap.has(identifier)) {
+      return this.objectMap.get(identifier);
+    }
+
+    if (this.objectMap.has(identifier) || this.registry.hasObject(identifier)) {
       return this.registry.getObject(identifier);
     }
 
@@ -47,6 +72,10 @@ export class RequestApplicationContext extends GenericApplicationContext {
   async getAsync<T = any>(identifier: any, args?: any): Promise<T> {
     if (typeof identifier !== 'string') {
       identifier = this.getIdentifier(identifier);
+    }
+
+    if (this.objectMap.has(identifier)) {
+      return this.objectMap.get(identifier);
     }
 
     if (this.registry.hasObject(identifier)) {

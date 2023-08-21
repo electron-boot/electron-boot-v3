@@ -36,6 +36,7 @@ export class ConfigService {
   @Init()
   init() {
     this.appInfo = {
+      runnerPath: this.environmentService.isDevelopment() ? process.cwd() : app.getAppPath(),
       name: app.getName(),
       version: app.getVersion(),
       HOME: app.getPath('home'),

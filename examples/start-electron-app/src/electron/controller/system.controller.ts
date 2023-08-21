@@ -1,11 +1,19 @@
-import { Event, Controller } from '@electron-boot/framework';
+import { Event, Controller, Autowired, Context } from '@electron-boot/framework';
 import { LoggerFactory } from '@electron-boot/logger';
 
 @Controller
 export class SystemController {
   private logger = LoggerFactory.getLogger(SystemController);
+
+  @Autowired()
+  ctx: Context;
+
   @Event
-  showMessage({ data }: any) {
-    console.log('这是当前的输出asd', data.a);
+  async showMessage(data: string) {
+    function sleep(time) {
+      return new Promise(resolve => setTimeout(resolve, time));
+    }
+    await sleep(5000);
+    return data + 'world';
   }
 }

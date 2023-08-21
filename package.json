@@ -12,9 +12,11 @@
     "pnpm": ">=7"
   },
   "scripts": {
-    "clear": "rimraf 'packages/*/{lib,node_modules}' && rimraf node_modules",
+    "clear:lib": "rimraf packages/*/{lib,dist}",
+    "clear": "rimraf packages/*/{lib,dist,node_modules ' && rimraf node_modules",
     "test": "jest",
     "build": "tsc -b -v packages",
+    "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm build && pnpm release:only",
     "release:only": "changeset publish --registry=https://registry.npmjs.com/"

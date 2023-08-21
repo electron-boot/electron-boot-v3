@@ -42,6 +42,10 @@ export class IpcService implements ISocket {
     ctx.getAttr = <T>(key: string): T => {
       return ctx.requestContext.getAttr(key);
     };
+    ctx.hasAttr = (key: string): boolean => {
+      return ctx.requestContext.hasAttr(key);
+    };
+    ctx.requestContext.registerObject('ctx', ctx);
     return ctx;
   }
 
@@ -51,27 +55,24 @@ export class IpcService implements ISocket {
       const channel = eventInfo.eventName;
 
       const ipcResult = async (event: any, data: any) => {
-        const ctx = event as Context;
-        this.createAnonymousContext(ctx);
-        event.requestContext = ctx.requestContext;
-        ctx.requestContext.registerObject('event', event);
-        ctx.requestContext.registerObject('data', data);
-        const controller = await event.requestContext.getAsync(eventInfo.id);
+        const ctx = this.createAnonymousContext();
+        ctx.setAttr('event', event);
+        const controller = await ctx.requestContext.getAsync(eventInfo.id);
         let result;
         if (typeof eventInfo.method !== 'string') {
-          result = await eventInfo.method({ event, data });
+          result = await eventInfo.method(data);
         } else {
-          result = await controller[eventInfo.method].call(controller, { event, data });
+          result = await controller[eventInfo.method].call(controller, data);
         }
         return result;
       };
-      // 创建监听
+      // ipc main on
       ipcMain.on(channel, async (event: IpcMainEvent, data: any) => {
         const result = await ipcResult(event, data);
         event.returnValue = result;
         event.reply(`${channel}`, result);
       });
-      // 创建handler
+      // ipc main handle
       ipcMain.handle(channel, async (event: IpcMainEvent, data: any) => {
         return await ipcResult(event, data);
       });

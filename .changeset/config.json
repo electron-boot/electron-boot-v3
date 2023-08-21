@@ -6,6 +6,5 @@
   "linked": [["@electron-boot/*"]],
   "access": "public",
   "baseBranch": "main",
-  "updateInternalDependencies": "patch",
-  "ignore": ["start-electron-app"]
+  "updateInternalDependencies": "patch"
 }

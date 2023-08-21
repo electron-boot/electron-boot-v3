@@ -10,6 +10,7 @@ export class GenericApplicationContext extends AbstractApplicationContext {
   constructor(parent?: IApplicationContext) {
     super(parent);
     this.registerObject('rootContext', this);
+    this.registerObject('ctx', this.ctx);
   }
 
   get registry(): IBeanDefinitionRegistry {

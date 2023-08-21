@@ -1,7 +1,8 @@
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
-import { Singleton } from './singleton.decorator';
 import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { ControllerMetadata } from '../interface';
+import { Provide } from './provide.decorator';
+import { Scope } from '../enums/enums';
 
 export interface ControllerDecorator {
   /**
@@ -29,5 +30,5 @@ export const Controller: ControllerDecorator = DecoratorUtil.createDecorator((ta
     controllerName: context.name,
     customName: customName,
   } as ControllerMetadata);
-  Singleton()(target, context);
+  Provide({ scope: Scope.Request })(target, context);
 });
