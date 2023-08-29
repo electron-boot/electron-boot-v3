@@ -12,7 +12,6 @@ import { ConfigService } from '../supports/service/config.service';
 import { IpcService } from '../supports/service/ipc.service';
 import defaultConfig from '../config/config.default';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
-import { WindowServiceFactory } from '../supports/factory/window.service.factory';
 import { EventService } from '../supports/service/event.service';
 import { IApplicationContext } from '../interface/context/application.context.interface';
 let stepIdx = 1;
@@ -53,7 +52,6 @@ export class Application {
     applicationContext.register(ConfigService);
     applicationContext.register(IpcService);
     applicationContext.register(SocketService);
-    applicationContext.register(WindowServiceFactory);
     applicationContext.register(LifecycleService);
     applicationContext.register(EventService);
 
@@ -103,9 +101,6 @@ export class Application {
     // merge config
     configService.load();
     this.logger.debug('[core]: Current config = %j', configService.getConfiguration());
-
-    // init window service factory
-    await applicationContext.getAsync(WindowServiceFactory);
 
     return applicationContext;
   }

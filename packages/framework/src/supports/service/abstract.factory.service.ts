@@ -1,7 +1,7 @@
 import { IServiceFactory } from '../../interface/support/support.interface';
 import { ObjectUtil } from '../../utils/object.util';
 
-export abstract class AbstractServiceFactory<T> implements IServiceFactory<T> {
+export abstract class AbstractFactoryService<T> implements IServiceFactory<T> {
   protected clients: Map<string, T> = new Map();
   protected options = {};
   public get<U = T>(id = 'default'): U {

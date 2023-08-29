@@ -1,83 +1,62 @@
-import { Autowired, Config, IBrowserWindow, Init, PlatformUtil, Singleton } from '@electron-boot/framework';
+import { Config, Init, Singleton } from '@electron-boot/framework';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
-import { autoUpdater } from 'electron-updater';
-import { AutoUpdate, EventData, EventType } from './interface';
+import { AutoUpdate } from './interface';
+import * as events from 'events';
+import { AppUpdater, autoUpdater } from 'electron-updater';
 
 @Singleton()
-export class UpdaterService {
+export class UpdaterService extends events {
   private isReady = false;
+
   private logger: ILogger = LoggerFactory.getLogger(UpdaterService);
+
+  private _autoUpdater: AppUpdater = autoUpdater;
+
   @Config('autoUpdater')
   private updaterConfig: AutoUpdate;
-  @Autowired()
-  private mainWindow: IBrowserWindow;
+
   @Init()
   async init() {
     if (this.isReady) return;
-    if (
-      !(
-        (PlatformUtil.isWindows() && this.updaterConfig.windows) ||
-        (PlatformUtil.isMacOS() && this.updaterConfig.macOS) ||
-        (PlatformUtil.isLinux() && this.updaterConfig.linux)
-      )
-    ) {
-      return;
-    }
     try {
-      autoUpdater.setFeedURL(this.updaterConfig.options);
+      this._autoUpdater.setFeedURL(this.updaterConfig.options);
     } catch (e) {
-      this.logger.error('setFeedURL error', e);
+      this.logger.warn('setFeedURL error', e);
+      throw e;
     }
-    /**
-     * 正在检查更新
-     */
-    autoUpdater.on('checking-for-update', () => {
-      console.log('正在检查更新');
-      this.sendStatusToWindow({
-        eventType: EventType.checking,
+    if (this.updaterConfig.token) {
+      this._autoUpdater.addAuthHeader(this.updaterConfig.token);
+    }
+    [
+      'login',
+      'checking-for-update',
+      'update-available',
+      'update-not-available',
+      'update-cancelled',
+      'download-progress',
+      'update-downloaded',
+      'error',
+    ].forEach((event: any) => {
+      this._autoUpdater.on(event, (...args: any[]) => {
+        console.log('打印日志');
+        this.emit(event, ...args);
       });
     });
-    autoUpdater.on('update-available', updateInfo => {
-      console.log('有更新');
-      this.sendStatusToWindow({
-        eventType: EventType.available,
-        updateInfo,
-      });
-    });
-    autoUpdater.on('update-not-available', updateInfo => {
-      console.log('没有更新');
-      this.sendStatusToWindow({
-        eventType: EventType.noAvailable,
-        updateInfo,
-      });
-    });
-    autoUpdater.on('error', (error, message) => {
-      this.sendStatusToWindow({
-        eventType: EventType.error,
-        errorInfo: {
-          message: message,
-          error,
-        },
-      });
-    });
-    autoUpdater.on('download-progress', progressInfo => {
-      this.sendStatusToWindow({
-        eventType: EventType.progress,
-        progressInfo,
-      });
-    });
-    autoUpdater.on('update-downloaded', event => {
-      this.sendStatusToWindow({
-        eventType: EventType.progress,
-        downloadedInfo: event,
-      });
-      autoUpdater.quitAndInstall();
-    });
-    autoUpdater.autoDownload = this.updaterConfig.force;
-    if (this.updaterConfig.force) await this.checkUpdate();
-    this.isReady = true;
+    // with token
+    if (this.updaterConfig.token) {
+      this._autoUpdater.addAuthHeader(this.updaterConfig.token);
+    }
+    if (typeof this.updaterConfig.forced === 'boolean') {
+      this._autoUpdater.forceDevUpdateConfig = this.updaterConfig.forced;
+    }
   }
 
+  get appUpdater(): AppUpdater {
+    return this._autoUpdater;
+  }
+  quitAndInstall() {
+    this._autoUpdater.quitAndInstall();
+  }
   /**
    * check update
    */
@@ -89,17 +68,6 @@ export class UpdaterService {
    * download update
    */
   async download() {
-    await autoUpdater.downloadUpdate();
-  }
-
-  /**
-   * send message to main window
-   * @param data
-   * @private
-   */
-  private sendStatusToWindow(data: EventData) {
-    const textJson = JSON.stringify(data);
-    const channel = '/system/appUpdater';
-    this.mainWindow.getInstance()?.webContents?.send(channel, textJson);
+    return await autoUpdater.downloadUpdate();
   }
 }

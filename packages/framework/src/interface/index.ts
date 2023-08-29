@@ -1,6 +1,5 @@
 export * from './beans';
 export * from './bootstrap/bootstrap.interface';
-export * from './clients';
 export * from './common';
 export * from './config';
 export * from './context';

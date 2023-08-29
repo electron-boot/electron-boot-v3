@@ -48,11 +48,15 @@ export class RequestApplicationContext extends GenericApplicationContext {
       identifier = this.getIdentifier(identifier);
     }
 
+    if (this.attrMap.has(identifier)) {
+      return this.attrMap.get(identifier);
+    }
+
     if (this.objectMap.has(identifier)) {
       return this.objectMap.get(identifier);
     }
 
-    if (this.objectMap.has(identifier) || this.registry.hasObject(identifier)) {
+    if (this.registry.hasObject(identifier)) {
       return this.registry.getObject(identifier);
     }
 
@@ -72,6 +76,10 @@ export class RequestApplicationContext extends GenericApplicationContext {
   async getAsync<T = any>(identifier: any, args?: any): Promise<T> {
     if (typeof identifier !== 'string') {
       identifier = this.getIdentifier(identifier);
+    }
+
+    if (this.attrMap.has(identifier)) {
+      return this.attrMap.get(identifier);
     }
 
     if (this.objectMap.has(identifier)) {

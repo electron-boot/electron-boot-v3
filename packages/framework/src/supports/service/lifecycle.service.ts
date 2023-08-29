@@ -8,7 +8,6 @@ import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
 import { IApplicationContext } from '../../interface/context/application.context.interface';
 import { ILifecycle } from '../../interface/context/lifecycle.interface';
 import { IObjectLifecycle } from '../../interface/context/object.lifecycle.interface';
-import { IBrowserWindow } from '../../interface/clients/browser.window.interface';
 
 @Singleton()
 export class LifecycleService {
@@ -22,9 +21,6 @@ export class LifecycleService {
 
   @Autowired('rootContext')
   readonly applicationContext: IApplicationContext;
-
-  @Autowired()
-  mainWindow: IBrowserWindow;
 
   @Init()
   protected async init() {

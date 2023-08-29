@@ -1,6 +1,6 @@
 {
   "name": "start-electron-app",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0",
   "description": "electron-boot vite-plugin-electron",
   "sideEffects": false,
   "main": "./dist/electron/bootstrap.js",
@@ -34,7 +34,8 @@
   },
   "dependencies": {
     "@electron-boot/framework": "workspace:*",
-    "@electron-boot/logger": "workspace:*"
+    "@electron-boot/logger": "workspace:*",
+    "@electron-boot/updater": "workspace:*"
   },
   "engines": {
     "node": ">=10"

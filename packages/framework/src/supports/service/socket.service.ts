@@ -7,7 +7,6 @@ import { ISocket } from '../../interface/support/support.interface';
 import { Init } from '../../decorators/definition.decorator';
 import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
 import { ALL } from '../../constant';
-import { WindowServiceFactory } from '../factory/window.service.factory';
 import { ApplicationContext } from '../../decorators/custom.decorator';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { IApplicationContext } from '../../interface/context/application.context.interface';
@@ -24,20 +23,12 @@ export class SocketService {
   @Autowired()
   decoratorService: DecoratorService;
 
-  @Autowired()
-  windowServiceFactory: WindowServiceFactory;
-
   @ApplicationContext()
   applicationContext: IApplicationContext;
 
   private globalSocketList: Array<ISocket> = [];
   @Init()
   async init() {
-    // register @Window decorator handler
-    this.decoratorService.registerPropertyHandler(DecoratorName.WINDOW, (propertyName, meta) => {
-      return this.windowServiceFactory.getWindow(meta.identifier ?? propertyName);
-    });
-
     // register @Config decorator handler
     this.decoratorService.registerPropertyHandler(DecoratorName.CONFIG, (propertyName, meta) => {
       if (meta.identifier === ALL) {

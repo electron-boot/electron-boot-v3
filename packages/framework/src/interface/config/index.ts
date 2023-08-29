@@ -1,5 +1,4 @@
 import { LoggerFactoryConfig } from '@electron-boot/logger';
-import { BrowserWindowOptions } from '../clients/browser.window.interface';
 export type PowerPartial<T> = {
   [U in keyof T]?: T[U] extends {} ? PowerPartial<T[U]> : T[U];
 };
@@ -12,8 +11,4 @@ export interface IConfig {
    * The logger config
    */
   logger?: LoggerFactoryConfig;
-  /**
-   * The window options
-   */
-  windowsOptions?: ServiceFactoryConfigOption<BrowserWindowOptions>;
 }

@@ -1,9 +1,13 @@
 import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
 import { ClassFieldDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { Decorator, Identifier } from '../interface/common';
+import { TypesUtil } from '../utils';
 
-export const createCustomFieldDecorator = (decorator: Decorator, impl = false): any => {
-  return DecoratorUtil.createDecorator((target: any, context: DecoratorContext, metadata: any = {}) => {
+export type extendMetadata = (...args: any[]) => object;
+
+export const createCustomFieldDecorator = (decorator: Decorator, extendMetadata?: extendMetadata, impl = false): any => {
+  return DecoratorUtil.createDecorator((target: any, context: DecoratorContext, ...args: any[]) => {
+    const metadata = TypesUtil.isFunction(extendMetadata) ? extendMetadata(...args) : {};
     const beanDefinition = DecoratorUtil.getBeanDefinition(context, DecoratorUtil.classBeanDefinition(context));
     const fieldDefinition = beanDefinition.fields.getField(context.name, {
       decorator: decorator,
@@ -81,4 +85,10 @@ export interface ConfigDecorator {
    */
   (target: any, context: ClassFieldDecoratorContext): void;
 }
-export const Config: ConfigDecorator = createCustomFieldDecorator(DecoratorName.CONFIG);
+export const Config: ConfigDecorator = createCustomFieldDecorator(DecoratorName.CONFIG, (...args: any[]) => {
+  const metadata: any = {};
+  if (args.length > 0) {
+    metadata.identifier = args.shift();
+  }
+  return metadata;
+});

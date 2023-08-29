@@ -4,7 +4,8 @@
   "compilerOptions": {
     "outDir": "lib",
     "paths": {},
-    "lib": ["dom"]
+    "lib": ["dom"],
+    "declarationMap": false
   },
   "exclude": ["node_modules","lib", "test/**/*", "*.spec.ts"],
   "references": []

@@ -9,24 +9,9 @@ export default (appInfo: AppInfo): IConfig => {
     urlStr = url.href;
   }
   return {
-    windowsOptions: {
-      default: {
-        show: false,
-        titleBarStyle: 'default',
-        focusable: true,
-        center: true,
-        webPreferences: {
-          contextIsolation: true,
-          scrollBounce: process.platform === 'darwin',
-        },
-      },
-      main: {
-        show: false,
-        url: urlStr,
-        webPreferences: {
-          preload: require.resolve('../preload/main.preload'),
-        },
-      },
+    autoUpdater: {
+      options: 'http://www.baidu.com',
     },
+    mainWindow: {},
   } as IConfig;
 };

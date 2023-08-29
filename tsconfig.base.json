@@ -5,7 +5,7 @@
     "module": "commonjs",
     "noImplicitAny": false,
     "noUnusedLocals": false,
-    "removeComments": true,
+    "removeComments": false,
     "downlevelIteration": true,
     "inlineSources": true,
     "noLib": false,

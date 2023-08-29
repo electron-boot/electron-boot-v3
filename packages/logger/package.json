@@ -1,6 +1,6 @@
 {
   "name": "@electron-boot/logger",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0",
   "description": "electron-boot logger",
   "sideEffects": false,
   "main": "./lib/index.js",
