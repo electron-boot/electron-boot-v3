@@ -10,6 +10,7 @@
     "inlineSources": true,
     "noLib": false,
     "useUnknownInCatchVariables": false,
+    "allowSyntheticDefaultImports": true,
     "target": "ES2021",
     "sourceMap": true,
     "allowJs": false,

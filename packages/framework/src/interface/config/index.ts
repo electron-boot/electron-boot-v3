@@ -6,6 +6,7 @@ export type ServiceFactoryConfigOption<OPTIONS> = {
   default: PowerPartial<OPTIONS>;
   [key: string]: PowerPartial<OPTIONS>;
 };
+
 export interface IConfig {
   /**
    * The logger config
