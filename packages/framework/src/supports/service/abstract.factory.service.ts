@@ -1,5 +1,6 @@
 import { IServiceFactory } from '../../interface/support/support.interface';
-import { ObjectUtil } from '../../utils/object.util';
+import {} from '../../utils/object.util';
+import { extend } from '../../utils/object.util';
 
 export abstract class AbstractFactoryService<T> implements IServiceFactory<T> {
   protected clients: Map<string, T> = new Map();
@@ -29,7 +30,7 @@ export abstract class AbstractFactoryService<T> implements IServiceFactory<T> {
     const defaultOption = this.options['default'] || {};
     // 多实例初始化
     for (const id of Object.keys(options)) {
-      if (id !== 'default') await this.createInstanceAsync(ObjectUtil.extend(true, {}, defaultOption, options[id]), id);
+      if (id !== 'default') await this.createInstanceAsync(extend({}, defaultOption, options[id]), id);
     }
   }
 
@@ -39,7 +40,7 @@ export abstract class AbstractFactoryService<T> implements IServiceFactory<T> {
    * @param clientName
    */
   createInstance(config: any, clientName: string): T {
-    config = ObjectUtil.extend(true, {}, this.options['default'], config);
+    config = extend(true, {}, this.options['default'], config);
     const client = this.createClient(config, clientName);
     if (client) {
       if (clientName) {
@@ -55,7 +56,7 @@ export abstract class AbstractFactoryService<T> implements IServiceFactory<T> {
    * @param clientName
    */
   async createInstanceAsync(config: any, clientName: string): Promise<T | undefined> {
-    config = ObjectUtil.extend(true, {}, this.options['default'], config);
+    config = extend(true, {}, this.options['default'], config);
     const client = await this.createClientAsync(config, clientName);
     if (client) {
       if (clientName) {

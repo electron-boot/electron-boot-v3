@@ -1,6 +1,6 @@
 {
   "name": "@electron-boot/vite-plugin-electron",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "electron-boot vite-plugin-electron",
   "sideEffects": false,
   "main": "./lib/cjs/index.js",

@@ -1,5 +1,5 @@
 import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
-import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from './decorator.manager';
 import { ModuleMetadata } from '../interface/decorator/metadata.interface';
 
 export interface ModuleDecorator {
@@ -15,6 +15,6 @@ export interface ModuleDecorator {
    */
   (moduleOption?: ModuleMetadata): ClassDecoratorFunction<any, any, any>;
 }
-export const Module: ModuleDecorator = DecoratorUtil.createDecorator((target, context: DecoratorContext, metadata: ModuleMetadata) => {
-  DecoratorUtil.saveMetadata(context, DecoratorName.MODULE, metadata);
+export const Module: ModuleDecorator = DecoratorManager.createDecorator((target, context: DecoratorContext, metadata: ModuleMetadata) => {
+  DecoratorManager.saveMetadata(context, DecoratorName.MODULE, metadata);
 });

@@ -1,7 +1,7 @@
 import { BootstrapOptions } from '../interface/bootstrap/bootstrap.interface';
 import { SocketService } from '../supports/service/socket.service';
 import { LifecycleService } from '../supports/service/lifecycle.service';
-import { DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorManager } from '../decorators/decorator.manager';
 import * as util from 'util';
 import { GenericApplicationContext } from '../context/generic.application.context';
 import { ModuleLoader } from '../supports/module.loader';
@@ -39,7 +39,7 @@ export class Application {
 
     // bind moduleStore to DecoratorUtil
     this.logger.debug('[core]: delegate module map from DecoratorUtil');
-    DecoratorUtil.bindModuleStore(applicationContext);
+    DecoratorManager.bindModuleStore(applicationContext);
 
     global['ELECTRON_APPLICATION_CONTEXT'] = applicationContext;
 
@@ -102,10 +102,11 @@ export class Application {
 
     // merge config
     configService.load();
+
     this.logger.debug('[core]: Current config = %j', configService.getConfiguration());
 
     // init state
-    await applicationContext.getAsync(StateService);
+    await applicationContext.getAsync(StateService, [configService]);
 
     return applicationContext;
   }
@@ -124,7 +125,7 @@ export class Application {
     this.printStepDebugInfo('Init preload modules');
 
     // some preload module init
-    const modules = DecoratorUtil.getPreloadModules();
+    const modules = DecoratorManager.getPreloadModules();
     for (const module of modules) {
       // preload init context
       await applicationContext.getAsync(module);

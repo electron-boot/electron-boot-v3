@@ -4,7 +4,6 @@
     "lib": ["ES2022","esnext.decorators"],
     "inlineSourceMap": false,
     "declaration": false,
-    "target": "ES2022",
     "types": ["node"]
   }
 }

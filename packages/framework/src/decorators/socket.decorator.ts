@@ -1,4 +1,4 @@
-import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from './decorator.manager';
 import { Singleton } from './singleton.decorator';
 import { ProviderOptions } from './provide.decorator';
 import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
@@ -35,7 +35,7 @@ export interface SocketDecorator {
    */
   (target: any, context: ClassDecoratorContext): void;
 }
-export const Socket: SocketDecorator = DecoratorUtil.createDecorator((target, context: any, identifier?: Identifier) => {
-  DecoratorUtil.saveModule(DecoratorName.SOCKET, target);
+export const Socket: SocketDecorator = DecoratorManager.createDecorator((target, context: any, identifier?: Identifier) => {
+  DecoratorManager.saveModule(DecoratorName.SOCKET, target);
   Singleton(identifier)(target, context);
 });

@@ -1,7 +1,7 @@
 import pm from 'picomatch';
 import { Singleton } from '../../decorators/singleton.decorator';
 import { Autowired } from '../../decorators/autowired.decorator';
-import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from '../../decorators/decorator.manager';
 import { TypesUtil } from '../../utils/types.util';
 import { AspectMetadata, IMethodAspect, JoinPoint } from '../../interface/support/support.interface';
 import { IApplicationContext } from '../../interface/context/application.context.interface';
@@ -17,11 +17,11 @@ export class AspectService {
    */
   public async loadAspect() {
     // for aop implementation
-    const aspectModules = DecoratorUtil.listModules(DecoratorName.ASPECT);
+    const aspectModules = DecoratorManager.listModules(DecoratorName.ASPECT);
     // sort for aspect target
     let aspectDataList = [];
     for (const module of aspectModules) {
-      const data = DecoratorUtil.getMetadata<Array<any>>(module, DecoratorName.ASPECT);
+      const data = DecoratorManager.getMetadata<Array<any>>(module, DecoratorName.ASPECT);
       aspectDataList = aspectDataList.concat(
         data.map(el => {
           el.aspectModule = module;

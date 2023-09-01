@@ -1,4 +1,4 @@
-import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from './decorator.manager';
 import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { ControllerMetadata } from '../interface';
 import { Provide } from './provide.decorator';
@@ -24,9 +24,9 @@ export interface ControllerDecorator {
    */
   (target: any, context: ClassDecoratorContext): void;
 }
-export const Controller: ControllerDecorator = DecoratorUtil.createDecorator((target, context: ClassDecoratorContext, customName?: string) => {
-  DecoratorUtil.saveModule(DecoratorName.CONTROLLER, target);
-  DecoratorUtil.saveMetadata(context, DecoratorName.CONTROLLER, {
+export const Controller: ControllerDecorator = DecoratorManager.createDecorator((target, context: ClassDecoratorContext, customName?: string) => {
+  DecoratorManager.saveModule(DecoratorName.CONTROLLER, target);
+  DecoratorManager.saveMetadata(context, DecoratorName.CONTROLLER, {
     controllerName: context.name,
     customName: customName,
   } as ControllerMetadata);

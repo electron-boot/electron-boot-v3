@@ -1,5 +1,6 @@
 export * from './beans';
 export * from './bootstrap';
+export * from './common';
 export * from './config/config.default';
 export * from './constant';
 export * from './context';

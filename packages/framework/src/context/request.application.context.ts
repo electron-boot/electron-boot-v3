@@ -1,6 +1,6 @@
 import { GenericApplicationContext } from './generic.application.context';
-import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
-import { ArrayUtil } from '../utils/array.util';
+import { DecoratorName, DecoratorManager } from '../decorators/decorator.manager';
+import { contains } from '../utils/array.util';
 import { IApplicationContext } from '../interface/context/application.context.interface';
 
 export class RequestApplicationContext extends GenericApplicationContext {
@@ -28,7 +28,7 @@ export class RequestApplicationContext extends GenericApplicationContext {
   }
 
   private getIdentifier(identifier: any): string {
-    return DecoratorUtil.getBeanDefinition(identifier).id;
+    return DecoratorManager.getBeanDefinition(identifier).id;
   }
 
   public setAttr(key: string, value) {
@@ -62,7 +62,7 @@ export class RequestApplicationContext extends GenericApplicationContext {
 
     const definition = this.applicationContext.registry.getDefinition(identifier);
     if (definition) {
-      if (definition.isRequestScope() || ArrayUtil.contains(definition.alias, DecoratorName.PIPELINE_IDENTIFIER)) {
+      if (definition.isRequestScope() || contains(definition.alias, DecoratorName.PIPELINE_IDENTIFIER)) {
         // create object from applicationContext definition for requestScope
         return this.resolveFactoryManager.doCreate(definition, args);
       }
@@ -92,7 +92,7 @@ export class RequestApplicationContext extends GenericApplicationContext {
 
     const definition = this.applicationContext.registry.getDefinition(identifier);
     if (definition) {
-      if (definition.isRequestScope() || ArrayUtil.contains(definition.alias, DecoratorName.PIPELINE_IDENTIFIER)) {
+      if (definition.isRequestScope() || contains(definition.alias, DecoratorName.PIPELINE_IDENTIFIER)) {
         // create object from applicationContext definition for requestScope
         return this.resolveFactoryManager.doCreateAsync(definition, args);
       }

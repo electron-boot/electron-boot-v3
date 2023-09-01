@@ -1,10 +1,10 @@
 import { Singleton } from '../../decorators/singleton.decorator';
 import { DynamicEventInfo, EventInfo } from '../../interface/support/service/event.interface';
-import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from '../../decorators/decorator.manager';
 import { ControllerMetadata, ActionMetadata } from '../../interface/decorator/metadata.interface';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { DuplicateEventException } from '../../errors/exceptions/duplicate.router.exception';
-import { StringUtil } from '../../utils';
+import { kebabCase } from '../../utils';
 
 @Singleton()
 export class EventService {
@@ -19,10 +19,10 @@ export class EventService {
    */
   private async analyze() {
     // 获取所有的controller模块
-    const controllerModules = DecoratorUtil.listModules(DecoratorName.CONTROLLER);
+    const controllerModules = DecoratorManager.listModules(DecoratorName.CONTROLLER);
     for (const module of controllerModules) {
       // 控制器参数
-      const controllerOption: ControllerMetadata = DecoratorUtil.getMetadata(module, DecoratorName.CONTROLLER);
+      const controllerOption: ControllerMetadata = DecoratorManager.getMetadata(module, DecoratorName.CONTROLLER);
       // 添加控制器
       this.addController(module, controllerOption);
     }
@@ -34,20 +34,20 @@ export class EventService {
    * @param controllerMetadata
    */
   public addController(controllerClazz: any, controllerMetadata: ControllerMetadata) {
-    const beanDefinition = DecoratorUtil.getBeanDefinition(controllerClazz);
+    const beanDefinition = DecoratorManager.getBeanDefinition(controllerClazz);
     const id = beanDefinition.id;
     /**
      * 所有的路由参数列表
      */
-    const actions: ActionMetadata[] = DecoratorUtil.getMetadata(controllerClazz, DecoratorName.ACTION);
+    const actions: ActionMetadata[] = DecoratorManager.getMetadata(controllerClazz, DecoratorName.ACTION);
     /**
      * 如果routerInfos有数据
      */
     if (actions && typeof actions[Symbol.iterator] === 'function') {
       for (const action of actions) {
         const eventName = [
-          controllerMetadata.customName ?? StringUtil.kebabCase(controllerMetadata.controllerName),
-          action.customName ?? StringUtil.kebabCase(action.actionName),
+          controllerMetadata.customName ?? kebabCase(controllerMetadata.controllerName),
+          action.customName ?? kebabCase(action.actionName),
         ].join('/');
         // 路由信息
         const data: EventInfo = {

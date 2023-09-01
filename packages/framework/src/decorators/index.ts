@@ -3,6 +3,7 @@ export * from './autowired.decorator';
 export * from './controller.decorator';
 export * from './custom.decorator';
 export * from './definition.decorator';
+export * from './decorator.manager';
 export * from './module.decorator';
 export * from './provide.decorator';
 export * from './singleton.decorator';

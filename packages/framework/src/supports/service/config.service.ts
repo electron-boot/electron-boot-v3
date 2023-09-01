@@ -3,7 +3,7 @@ import { AppInfo } from '../../interface/support/support.interface';
 import { EnvironmentService } from './environment.service';
 import { Autowired } from '../../decorators/autowired.decorator';
 import { Destroy, Init } from '../../decorators/definition.decorator';
-import { ObjectUtil } from '../../utils/object.util';
+import { extend } from '../../utils/object.util';
 import { TypesUtil } from '../../utils/types.util';
 import { IApplicationContext } from '../../interface/context/application.context.interface';
 import { app } from 'electron';
@@ -63,9 +63,9 @@ export class ConfigService {
         value: obj,
       });
       if (reverse) {
-        this.configuration = ObjectUtil.extend(true, obj, this.configuration);
+        this.configuration = extend(true, obj, this.configuration);
       } else {
-        ObjectUtil.extend(true, this.configuration, obj);
+        extend(true, this.configuration, obj);
       }
     } else {
       this.externalObject.push(obj);
@@ -112,7 +112,7 @@ export class ConfigService {
         extraPath: data,
         value: config,
       });
-      ObjectUtil.extend(true, target, config);
+      extend(true, target, config);
     }
     if (this.externalObject.length) {
       for (let externalObject of this.externalObject) {
@@ -121,7 +121,7 @@ export class ConfigService {
           if (!externalObject) {
             continue;
           }
-          ObjectUtil.extend(true, target, externalObject);
+          extend(true, target, externalObject);
           this.configMergeOrder.push({
             env: 'default',
             extraPath: '',

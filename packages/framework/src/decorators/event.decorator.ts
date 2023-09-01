@@ -1,4 +1,4 @@
-import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from './decorator.manager';
 import { ClassMethodDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { ActionMetadata } from '../interface';
 export interface EventDecorator {
@@ -23,8 +23,8 @@ export interface EventDecorator {
    */
   (target: any, context: ClassMethodDecoratorContext);
 }
-export const Event: EventDecorator = DecoratorUtil.createDecorator((target, context: ClassMethodDecoratorContext, customname?: string) => {
-  let metadata = DecoratorUtil.getMetadata<Array<ActionMetadata>>(context, DecoratorName.ACTION);
+export const Event: EventDecorator = DecoratorManager.createDecorator((target, context: ClassMethodDecoratorContext, customname?: string) => {
+  let metadata = DecoratorManager.getMetadata<Array<ActionMetadata>>(context, DecoratorName.ACTION);
   if (!metadata) {
     metadata = [];
   }
@@ -32,5 +32,5 @@ export const Event: EventDecorator = DecoratorUtil.createDecorator((target, cont
     actionName: context.name as string,
     customName: customname,
   });
-  DecoratorUtil.saveMetadata(context, DecoratorName.ACTION, metadata);
+  DecoratorManager.saveMetadata(context, DecoratorName.ACTION, metadata);
 });

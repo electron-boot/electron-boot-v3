@@ -1,8 +1,8 @@
 import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { Scope } from '../enums/enums';
-import { DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorManager } from './decorator.manager';
 import { TypesUtil } from '../utils/types.util';
-import { StringUtil } from '../utils/string.util';
+import { camelCase } from '../utils/string.util';
 import { Identifier } from '../interface/common';
 export interface ProviderOptions {
   /**
@@ -56,14 +56,14 @@ export interface ProvideDecorator {
    */
   (target: any, context: ClassDecoratorContext): void;
 }
-export const Provide = DecoratorUtil.createDecorator((target, context: DecoratorContext, identifier: Identifier, scope: Scope) => {
+export const Provide = DecoratorManager.createDecorator((target, context: DecoratorContext, identifier: Identifier, scope: Scope) => {
   let options: ProviderOptions;
   if (TypesUtil.isMetadataObject(identifier)) {
     options = identifier as ProviderOptions;
   } else {
     options = { identifier, scope };
   }
-  const beanDefinition = DecoratorUtil.getBeanDefinition(context, DecoratorUtil.classBeanDefinition(context));
+  const beanDefinition = DecoratorManager.getBeanDefinition(context, DecoratorManager.classBeanDefinition(context));
   if (options.identifier) {
     beanDefinition.alias.push(options.identifier);
   }
@@ -71,7 +71,7 @@ export const Provide = DecoratorUtil.createDecorator((target, context: Decorator
     beanDefinition.scope = options.scope;
   }
   beanDefinition.target = target;
-  beanDefinition.name = StringUtil.camelCase(context.name as string);
+  beanDefinition.name = camelCase(context.name as string);
   beanDefinition.originName = context.name as string;
   beanDefinition.save();
 }) as ProvideDecorator;

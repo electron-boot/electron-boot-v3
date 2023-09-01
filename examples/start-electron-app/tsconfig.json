@@ -2,7 +2,8 @@
   "compilerOptions": {
     "allowUnreachableCode": false,
     "declaration": true,
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "removeComments": true,
@@ -14,6 +15,6 @@
     "sourceMap": true,
     "allowJs": false,
     "resolveJsonModule": true,
-    "baseUrl": "./",
+    "baseUrl": "./"
   }
 }

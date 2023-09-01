@@ -1,7 +1,7 @@
 import { CreateDecoratorCallBack, DecoratorTarget, ModuleStore } from '../interface/decorator/decorators.interface';
 import { Decorator } from '../interface/common';
-import { SymbolMetadata } from './symbol.util';
-import { TypesUtil } from './types.util';
+import { SymbolMetadata } from '../utils/symbol.util';
+import { TypesUtil } from '../utils/types.util';
 import { FieldsDefinition } from '../beans/definition/fields.definition';
 import { IObjectBeanDefinition } from '../interface/beans/definition/object.bean.definition';
 import { IClassBeanDefinition } from '../interface/beans/definition/class.bean.definition';
@@ -24,11 +24,11 @@ export class DecoratorName {
   static ACTION = Symbol('action');
   static PIPELINE_IDENTIFIER = Symbol('pipeline_identifier');
 }
-export class DecoratorUtil implements ModuleStore {
+export class DecoratorManager implements ModuleStore {
   private moduleMap = new Map<Decorator, Set<any>>();
   private moduleStore: ModuleStore;
   private static store = new WeakMap<DecoratorMetadataObject, any>();
-  private static instance: DecoratorUtil;
+  private static instance: DecoratorManager;
   listModules(decorator: Decorator): any[] {
     if (this.moduleStore) {
       return this.moduleStore.listModules(decorator);
@@ -44,9 +44,9 @@ export class DecoratorUtil implements ModuleStore {
     }
     this.moduleMap.get(decorator).add(module);
   }
-  private static getInstance(): DecoratorUtil {
+  private static getInstance(): DecoratorManager {
     if (!this.instance) {
-      this.instance = new DecoratorUtil();
+      this.instance = new DecoratorManager();
     }
     return this.instance;
   }
@@ -166,7 +166,7 @@ export class DecoratorUtil implements ModuleStore {
       if (TypesUtil.isFunction(factoryInfo.provider)) {
         this.saveMetadata(factoryInfo.provider, DecoratorName.FACTORY, factoryInfo);
         const beanDefinition = this.factoryBeanDefinition(factoryInfo.provider);
-        DecoratorUtil.saveBeanDefinition(factoryInfo.provider, beanDefinition);
+        DecoratorManager.saveBeanDefinition(factoryInfo.provider, beanDefinition);
       }
     }
   }

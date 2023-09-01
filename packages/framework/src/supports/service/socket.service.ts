@@ -5,7 +5,7 @@ import { ConfigService } from './config.service';
 import { DecoratorService } from './decorator.service';
 import { ISocket } from '../../interface/support/support.interface';
 import { Init } from '../../decorators/definition.decorator';
-import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from '../../decorators/decorator.manager';
 import { ALL } from '../../constant';
 import { ApplicationContext } from '../../decorators/custom.decorator';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
@@ -38,10 +38,10 @@ export class SocketService {
       }
     });
 
-    const sockets: Array<new (...args) => any> = DecoratorUtil.listModules(DecoratorName.SOCKET);
+    const sockets: Array<new (...args) => any> = DecoratorManager.listModules(DecoratorName.SOCKET);
     if (sockets.length) {
       for (const socket of sockets) {
-        if (!this.applicationContext.registry.hasDefinition(DecoratorUtil.getBeanDefinition(socket).id)) {
+        if (!this.applicationContext.registry.hasDefinition(DecoratorManager.getBeanDefinition(socket).id)) {
           this.logger.debug(`[core]: Found socket "${socket.name}" but missing definition, skip initialize.`);
           continue;
         }

@@ -1,6 +1,6 @@
 import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { Provide, ProviderOptions } from './provide.decorator';
-import { DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorManager } from './decorator.manager';
 import { Scope } from '../enums/enums';
 import { Identifier } from '../interface/common';
 
@@ -35,6 +35,6 @@ export interface SingletonDecorator {
    */
   (target: any, context: ClassDecoratorContext): void;
 }
-export const Singleton: SingletonDecorator = DecoratorUtil.createDecorator((target, context: any, identifier: Identifier) => {
+export const Singleton: SingletonDecorator = DecoratorManager.createDecorator((target, context: any, identifier: Identifier) => {
   Provide(identifier, Scope.Singleton)(target, context);
 });

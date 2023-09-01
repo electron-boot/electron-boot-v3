@@ -1,15 +1,14 @@
 import { Singleton } from '../../decorators/singleton.decorator';
 import { Deserialize, OnChangeCallback, Options, Serialize, Unsubscribe } from '../../interface/support/service/state.interface';
-import { Autowired, Init } from '../../decorators';
+import { Init } from '../../decorators';
 import { EventEmitter } from 'node:events';
 import * as crypto from 'node:crypto';
 import * as path from 'node:path';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
-import { assign, get, isEqual, isUndefined, isNull, set, unset } from 'lodash-es';
+import { assign, get, isEqual, isUndefined, isNull, set, unset } from 'lodash';
 import { app } from 'electron';
 import { ConfigService } from './config.service';
-import { outputFile, readFile } from 'fs-extra';
-import { readFile as atomReadFile, writeFile } from 'atomically';
+import { outputFile, readFile, mkdirsSync } from 'fs-extra';
 
 @Singleton()
 export class StateService<T extends Record<string, any> = Record<string, unknown>> {
@@ -24,7 +23,6 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
   readonly #filename: string;
   #data: T;
   #lastSavedData: string;
-  @Autowired()
   configService: ConfigService;
   private readonly decryptData = (data: string | Buffer): string => {
     const encryptionKey = this.#encryptionKey;
@@ -56,7 +54,8 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
 
   private readonly deserialize: Deserialize<T> = value => JSON.parse(value);
   private readonly serialize: Serialize<T> = value => JSON.stringify(value, undefined, 2);
-  constructor() {
+  constructor(configService: ConfigService) {
+    this.configService = configService;
     this.#options = assign<Options<T>, Options<T>>(
       {
         name: 'state',
@@ -70,7 +69,7 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
     this.#defaultValue = assign<{}, T>({}, this.#options.defaults);
     this.#events = new EventEmitter();
     const fileExtension = this.#options.extension ? `.${this.#options.extension}` : '';
-    this.#filename = path.resolve(this.#options.cwd, '.' + this.#options.projectName, `${this.#options.name}${fileExtension}`);
+    this.#filename = path.resolve(this.#options.cwd, 'state', `${this.#options.name}${fileExtension}`);
     this.logger = LoggerFactory.getLogger(StateService.name + '#' + this.#options.name);
     if (this.#options.encryptionKey) this.#encryptionKey = this.#options.encryptionKey;
     if (this.#options.serialize) this.serialize = this.#options.serialize;
@@ -88,21 +87,23 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
   }
 
   private async doInit() {
-    let data: string | Buffer | PromiseLike<string | Buffer>;
     try {
-      if (process.env.SNAP) {
-        data = await readFile(this.#filename, 'utf-8');
-      } else {
-        data = await atomReadFile(this.#filename, {
-          encoding: 'utf-8',
-        });
-      }
+      const data = await readFile(this.#filename, 'utf-8');
       const decryptData = this.decryptData(data);
       const deserializedData = this.deserialize(decryptData);
       this.#data = assign({}, this.#defaultValue, deserializedData);
     } catch (e) {
+      if (e?.code === 'ENOENT') {
+        this.ensureDirectory();
+        this.#data = assign({}, this.#defaultValue);
+        return;
+      }
       this.logger.error(e);
     }
+  }
+
+  private ensureDirectory(): void {
+    mkdirsSync(path.dirname(this.#filename));
   }
 
   private async save(): Promise<void> {
@@ -124,22 +125,10 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
       if (encryptData === this.#lastSavedData) {
         return;
       }
-      if (process.env.SNAP) {
-        await outputFile(this.#filename, encryptData, { mode: this.#options.mode });
-      } else {
-        await writeFile(this.#filename, encryptData, {
-          mode: this.#options.mode,
-        });
-      }
-    } catch (e) {
-      if (e?.code === 'EXDEV') {
-        return await outputFile(this.#filename, encryptData, {
-          mode: this.#options.mode,
-        });
-      }
-      this.logger.error(e);
-    } finally {
+      await outputFile(this.#filename, encryptData, { mode: this.#options.mode });
       this.#events.emit('change');
+    } catch (e) {
+      this.logger.error(e);
     }
   }
 

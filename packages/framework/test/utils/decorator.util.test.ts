@@ -1,5 +1,5 @@
 import { StringUtil } from '../../src/utils/string.util';
-import { DecoratorUtil } from '../../src/utils/decorator.util';
+import { DecoratorManager } from '../../src/decorators/decorator.manager';
 import { Provide } from '../../src/decorators/provide.decorator';
 import { Scope } from '../../src/enums/enums';
 
@@ -9,7 +9,7 @@ describe('/test/utils/beans.util.test.ts', () => {
   })
   class Cat {}
   it('should test getBeanDefinition', () => {
-    const beanDefinition = DecoratorUtil.getBeanDefinition(Cat);
+    const beanDefinition = DecoratorManager.getBeanDefinition(Cat);
     expect(beanDefinition).toHaveProperty('target', Cat);
     expect(beanDefinition).toHaveProperty('id');
     expect(beanDefinition).toHaveProperty('name', StringUtil.camelCase(Cat.name));

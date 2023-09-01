@@ -7,6 +7,7 @@ export abstract class AbstractWindow {
   protected _id: number;
   protected _win: BrowserWindow;
   protected readyState = WindowReadyState.NONE;
+  protected abstract windowControlHeightStateStorageKey: string;
   get isReady() {
     return this.readyState === WindowReadyState.READY;
   }

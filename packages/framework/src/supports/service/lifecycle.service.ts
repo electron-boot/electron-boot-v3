@@ -4,7 +4,7 @@ import { Autowired } from '../../decorators/autowired.decorator';
 import { ConfigService } from './config.service';
 import { SocketService } from './socket.service';
 import { Init } from '../../decorators/definition.decorator';
-import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from '../../decorators/decorator.manager';
 import { IApplicationContext } from '../../interface/context/application.context.interface';
 import { ILifecycle } from '../../interface/context/lifecycle.interface';
 import { IObjectLifecycle } from '../../interface/context/object.lifecycle.interface';
@@ -25,7 +25,7 @@ export class LifecycleService {
   @Init()
   protected async init() {
     // run lifecycle
-    const cycles = DecoratorUtil.listModules(DecoratorName.MODULE) as Array<{
+    const cycles = DecoratorManager.listModules(DecoratorName.MODULE) as Array<{
       target: any;
       instance?: any;
     }>;
@@ -67,7 +67,7 @@ export class LifecycleService {
 
   public async stop() {
     // stop lifecycle
-    const cycles = DecoratorUtil.listModules(DecoratorName.MODULE) || [];
+    const cycles = DecoratorManager.listModules(DecoratorName.MODULE) || [];
 
     for (const cycle of cycles.reverse()) {
       const inst: IObjectLifecycle = await this.applicationContext.getAsync<IObjectLifecycle>(cycle.target);

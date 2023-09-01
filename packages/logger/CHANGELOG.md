@@ -1,5 +1,11 @@
 # @electron-boot/logger
 
+## 2.0.0
+
+### Major Changes
+
+- fix: fix bug and add state service
+
 ## 1.0.0
 
 ### Major Changes

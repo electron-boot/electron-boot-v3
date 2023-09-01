@@ -1,6 +1,6 @@
 {
   "name": "@electron-boot/updater",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "electron-boot updater",
   "sideEffects": false,
   "main": "./lib/cjs/index.js",

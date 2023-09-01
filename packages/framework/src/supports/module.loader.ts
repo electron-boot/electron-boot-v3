@@ -1,6 +1,6 @@
 import { DynamicModule, Provider } from '../interface/decorator/metadata.interface';
 import { TypesUtil } from '../utils/types.util';
-import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from '../decorators/decorator.manager';
 import { Scope } from '../enums/enums';
 import { ConfigService } from './service/config.service';
 import { IApplicationContext } from '../interface/context/application.context.interface';
@@ -20,9 +20,9 @@ export class ModuleLoader {
       return (module as Promise<DynamicModule>).then(m => this.load(m));
     }
     if (TypesUtil.isClass(module)) {
-      moduleInfo = DecoratorUtil.getMetadata(<Type>module, DecoratorName.MODULE);
+      moduleInfo = DecoratorManager.getMetadata(<Type>module, DecoratorName.MODULE);
       if (!moduleInfo) {
-        const beanDefinition = DecoratorUtil.getBeanDefinition(module as Type, DecoratorUtil.classBeanDefinition(module));
+        const beanDefinition = DecoratorManager.getBeanDefinition(module as Type, DecoratorManager.classBeanDefinition(module));
         beanDefinition.scope = Scope.Singleton;
         beanDefinition.target = module as Type;
         beanDefinition.save();
@@ -42,17 +42,17 @@ export class ModuleLoader {
   }
 
   bindModuleClass(clazz: Type) {
-    const beanDefinition = DecoratorUtil.getBeanDefinition(clazz, DecoratorUtil.classBeanDefinition(clazz));
+    const beanDefinition = DecoratorManager.getBeanDefinition(clazz, DecoratorManager.classBeanDefinition(clazz));
     beanDefinition.scope = Scope.Singleton;
     beanDefinition.target = clazz;
     beanDefinition.save();
     this.context.registerClass(undefined, clazz);
-    const configurationMods = DecoratorUtil.listModules(DecoratorName.MODULE);
+    const configurationMods = DecoratorManager.listModules(DecoratorName.MODULE);
     const exists = configurationMods.find(mod => {
       return mod.target === clazz;
     });
     if (!exists) {
-      DecoratorUtil.saveModule(DecoratorName.MODULE, {
+      DecoratorManager.saveModule(DecoratorName.MODULE, {
         target: clazz,
       });
     }

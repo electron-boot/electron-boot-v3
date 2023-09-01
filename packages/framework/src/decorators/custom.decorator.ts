@@ -1,4 +1,4 @@
-import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from './decorator.manager';
 import { ClassFieldDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { Decorator, Identifier } from '../interface/common';
 import { TypesUtil } from '../utils';
@@ -6,9 +6,9 @@ import { TypesUtil } from '../utils';
 export type extendMetadata = (...args: any[]) => object;
 
 export const createCustomFieldDecorator = (decorator: Decorator, extendMetadata?: extendMetadata, impl = false): any => {
-  return DecoratorUtil.createDecorator((target: any, context: DecoratorContext, ...args: any[]) => {
+  return DecoratorManager.createDecorator((target: any, context: DecoratorContext, ...args: any[]) => {
     const metadata = TypesUtil.isFunction(extendMetadata) ? extendMetadata(...args) : {};
-    const beanDefinition = DecoratorUtil.getBeanDefinition(context, DecoratorUtil.classBeanDefinition(context));
+    const beanDefinition = DecoratorManager.getBeanDefinition(context, DecoratorManager.classBeanDefinition(context));
     const fieldDefinition = beanDefinition.fields.getField(context.name, {
       decorator: decorator,
       impl: impl,

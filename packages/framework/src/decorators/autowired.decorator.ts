@@ -1,5 +1,5 @@
 import { ClassFieldDecoratorFunction, ClassMethodDecoratorFunction, ProviderIdentifier } from '../interface/decorator/decorators.interface';
-import { DecoratorName, DecoratorUtil } from '../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from './decorator.manager';
 import { DecoratorNotValidException } from '../errors/exceptions/decorator.not.valid.exception';
 import { AutowiredFieldMetadata } from '../interface/decorator/metadata.interface';
 import { TypesUtil } from '../utils/types.util';
@@ -66,7 +66,7 @@ export interface AutowiredDecorator {
    */
   (target: any, context: ClassFieldDecoratorContext): void;
 }
-export const Autowired: AutowiredDecorator = DecoratorUtil.createDecorator((target: any, context: DecoratorContext, provider: any) => {
+export const Autowired: AutowiredDecorator = DecoratorManager.createDecorator((target: any, context: DecoratorContext, provider: any) => {
   switch (context.kind) {
     case 'field':
       saveAutowiredField(context, {
@@ -86,14 +86,14 @@ export const Autowired: AutowiredDecorator = DecoratorUtil.createDecorator((targ
   }
 });
 export const saveAutowiredField = (context: ClassFieldDecoratorContext, metadata: IFieldDefinition) => {
-  const beanDefinition = DecoratorUtil.getBeanDefinition(context, DecoratorUtil.classBeanDefinition(context));
+  const beanDefinition = DecoratorManager.getBeanDefinition(context, DecoratorManager.classBeanDefinition(context));
   const fieldDefinition = beanDefinition.fields.getField(context.name, metadata);
   fieldDefinition.metadata.static = context.static;
   fieldDefinition.metadata.private = context.private;
   fieldDefinition.metadata.access = context.access;
   if (fieldDefinition.metadata.provider) {
-    if (!TypesUtil.isPrimitiveType(fieldDefinition.metadata.provider) && DecoratorUtil.isProvider(fieldDefinition.metadata.provider)) {
-      fieldDefinition.metadata.provider = DecoratorUtil.getBeanDefinition(fieldDefinition.metadata.provider).id;
+    if (!TypesUtil.isPrimitiveType(fieldDefinition.metadata.provider) && DecoratorManager.isProvider(fieldDefinition.metadata.provider)) {
+      fieldDefinition.metadata.provider = DecoratorManager.getBeanDefinition(fieldDefinition.metadata.provider).id;
       fieldDefinition.metadata.injectMode = InjectMode.Class;
     }
   } else {

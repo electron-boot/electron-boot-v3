@@ -4,7 +4,7 @@ import { MissingImportException } from '../errors/exceptions/missing.import.exce
 import { DefinitionNotFoundException } from '../errors/exceptions/definition.not.found.exception';
 import { ResolverMissingException } from '../errors/exceptions/resolver.missing.exception';
 import { SingletonInjectRequestException } from '../errors/exceptions/singleton.inject.request.exception';
-import { DecoratorName } from '../utils/decorator.util';
+import { DecoratorName } from '../decorators/decorator.manager';
 import { AutowiredFieldMetadata } from '../interface/decorator/metadata.interface';
 import { BeanDefinition } from '../interface/beans/definition/bean.definition';
 import { IFieldDefinition } from '../interface/beans/definition/field.definition';

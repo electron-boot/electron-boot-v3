@@ -2,7 +2,7 @@ import { Singleton } from '../../decorators/singleton.decorator';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { Init } from '../../decorators/definition.decorator';
 import { Autowired } from '../../decorators/autowired.decorator';
-import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';
+import { DecoratorName, DecoratorManager } from '../../decorators/decorator.manager';
 import { RuntimeException } from '../../errors/exceptions/runtime.exception';
 import { AspectService } from './aspect.service';
 import { HandlerFunction, MethodHandlerFunction } from '../../interface/support/support.interface';
@@ -25,7 +25,7 @@ export class DecoratorService {
   protected init() {
     // add custom method decorator listener
     this.applicationContext.onBeforeBind(clazz => {
-      const beanDefinition = DecoratorUtil.getBeanDefinition<IClassBeanDefinition>(clazz);
+      const beanDefinition = DecoratorManager.getBeanDefinition<IClassBeanDefinition>(clazz);
       if (beanDefinition && beanDefinition.methods) {
         // loop it, save this order for decorator run
         for (const methodKey of beanDefinition.methods.methodKeys()) {

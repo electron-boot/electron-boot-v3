@@ -6,5 +6,5 @@
   "linked": [["@electron-boot/*"]],
   "access": "public",
   "baseBranch": "main",
-  "updateInternalDependencies": "patch"
+  "updateInternalDependencies": "minor"
 }

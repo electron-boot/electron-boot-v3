@@ -1,10 +1,10 @@
 import { EventEmitter } from 'node:events';
 import { ResolverFactoryManager } from '../supports/resolver.factory.manager';
 import { TypesUtil } from '../utils/types.util';
-import { ObjectUtil } from '../utils/object.util';
+import { extend } from '../utils/object.util';
 import { Kind, ObjectLifeCycle, Scope } from '../enums/enums';
-import { DecoratorUtil } from '../utils/decorator.util';
-import { ArrayUtil } from '../utils/array.util';
+import { DecoratorManager } from '../decorators/decorator.manager';
+import { contains } from '../utils/array.util';
 import { NotFoundMethodException } from '../errors/exceptions/not.found.method.exception';
 import { DefinitionNotFoundException } from '../errors/exceptions/definition.not.found.exception';
 import { IAliasRegistry } from '../interface/beans/support/alias.registry';
@@ -68,14 +68,14 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
       return;
     }
     if (options) {
-      definition = ObjectUtil.extend(true, definition, options);
+      definition = extend(true, definition, options);
     }
     if (definition.bindHook) {
       definition.bindHook(definition.target, definition);
     }
     if (definition.kind === Kind.Class) {
       // merge fields
-      DecoratorUtil.mergeExtendedFields(definition);
+      DecoratorManager.mergeExtendedFields(definition);
     }
     this.emit(ObjectLifeCycle.BEFORE_BIND, definition.target, {
       context: this,
@@ -89,10 +89,10 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
 
   registerFactory(identifier: Identifier, target: any, options?: Partial<IObjectBeanDefinition>): void {
     if (TypesUtil.isFunction(target)) {
-      if (!identifier && !DecoratorUtil.isFactory(target)) {
+      if (!identifier && !DecoratorManager.isFactory(target)) {
         return;
       }
-      const beanDefinition = DecoratorUtil.getBeanDefinition<IFactoryBeanDefinition>(target);
+      const beanDefinition = DecoratorManager.getBeanDefinition<IFactoryBeanDefinition>(target);
       if (identifier) {
         beanDefinition.alias.push(identifier);
       }
@@ -103,7 +103,7 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
 
   registerClass(identifier: Identifier, target: any, options?: Partial<IObjectBeanDefinition>): void {
     if (TypesUtil.isClass(target)) {
-      const beanDefinition = DecoratorUtil.getBeanDefinition(target, DecoratorUtil.classBeanDefinition(target));
+      const beanDefinition = DecoratorManager.getBeanDefinition(target, DecoratorManager.classBeanDefinition(target));
       if (identifier) {
         beanDefinition.alias.push(identifier);
       }
@@ -115,11 +115,11 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
   registerObject(identifier: any, target?: any, replace?: boolean): void {
     if (!TypesUtil.isPlainObject(target) && target.constructor && TypesUtil.isClass(target.constructor)) {
       const definitionTarget = target.constructor;
-      const beanDefinition = DecoratorUtil.getBeanDefinition(definitionTarget, DecoratorUtil.classBeanDefinition(definitionTarget));
-      if (!DecoratorUtil.isProvider(definitionTarget)) {
+      const beanDefinition = DecoratorManager.getBeanDefinition(definitionTarget, DecoratorManager.classBeanDefinition(definitionTarget));
+      if (!DecoratorManager.isProvider(definitionTarget)) {
         beanDefinition.scope = Scope.Singleton;
       }
-      if (identifier && ArrayUtil.contains(beanDefinition.alias, identifier)) {
+      if (identifier && contains(beanDefinition.alias, identifier)) {
         beanDefinition.alias.push(identifier);
       }
       beanDefinition.save();
@@ -149,7 +149,7 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
     options = options ?? { originName: identifier };
     if (!TypesUtil.isIdentifier(identifier)) {
       options.originName = identifier?.name;
-      identifier = DecoratorUtil.getBeanDefinition(identifier)?.id;
+      identifier = DecoratorManager.getBeanDefinition(identifier)?.id;
     }
     if (this.registry.hasObject(identifier)) {
       return this.registry.getObject(identifier);
@@ -171,7 +171,7 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
     options = options ?? { originName: identifier };
     if (!TypesUtil.isIdentifier(identifier)) {
       options.originName = identifier.name;
-      identifier = DecoratorUtil.getBeanDefinition(identifier).id;
+      identifier = DecoratorManager.getBeanDefinition(identifier).id;
     }
     if (this.registry.hasObject(identifier)) {
       return this.registry.getObject(identifier);

@@ -1,12 +1,12 @@
 import { Kind, Scope } from '../../enums/enums';
 import { IObjectBeanDefinition } from '../../interface/beans/definition/object.bean.definition';
 import { IObjectCreatorDefinition } from '../../interface/beans/definition/object.creator.definition';
-import { StringUtil } from '../../utils/string.util';
-import { DecoratorUtil } from '../../utils';
+import { generateUUID } from '../../utils/string.util';
+import { DecoratorManager } from '../../utils';
 import { Identifier } from '../../interface/common';
 
 export abstract class ObjectBeanDefinition implements IObjectBeanDefinition {
-  id: string = StringUtil.generateUUID();
+  id: string = generateUUID();
   abstract kind: Kind;
   decoratorMetadataObject: DecoratorMetadataObject;
   fieldsMerge = false;
@@ -29,9 +29,9 @@ export abstract class ObjectBeanDefinition implements IObjectBeanDefinition {
   }
   save() {
     if (this.decoratorMetadataObject) {
-      DecoratorUtil.saveBeanDefinition(this.decoratorMetadataObject, this);
+      DecoratorManager.saveBeanDefinition(this.decoratorMetadataObject, this);
     } else {
-      DecoratorUtil.saveBeanDefinition(this.target, this);
+      DecoratorManager.saveBeanDefinition(this.target, this);
     }
   }
 }
