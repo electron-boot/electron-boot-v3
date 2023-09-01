@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowUnreachableCode": false,
     "declaration": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "removeComments": false,

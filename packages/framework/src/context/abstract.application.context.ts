@@ -1,4 +1,4 @@
-import * as EventEmitter from 'node:events';
+import { EventEmitter } from 'node:events';
 import { ResolverFactoryManager } from '../supports/resolver.factory.manager';
 import { TypesUtil } from '../utils/types.util';
 import { ObjectUtil } from '../utils/object.util';

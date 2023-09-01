@@ -8,10 +8,10 @@
       "path": "./framework/tsconfig.build.json"
     },
     {
-      "path": "./vite-plugin-electron/tsconfig.build.json"
+      "path": "./updater/tsconfig.build.json"
     },
     {
-      "path": "./updater/tsconfig.build.json"
+      "path": "./vite-plugin-electron/tsconfig.build.json"
     }
   ]
 }

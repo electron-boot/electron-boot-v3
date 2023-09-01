@@ -1,10 +1,14 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": ["src"],
-  "compilerOptions": {
-    "outDir": "lib",
-    "paths": {}
-  },
-  "exclude": ["node_modules", "dist", "test/**/*", "*.spec.ts"],
-  "references": []
+  "files": [],
+  "references": [
+    {
+      "path": "tsconfig.prod.cjs.json"
+    },
+    {
+      "path": "tsconfig.prod.es.json"
+    },
+    {
+      "path": "tsconfig.prod.types.json"
+    }
+  ]
 }

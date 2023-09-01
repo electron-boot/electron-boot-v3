@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "description": "electron-boot logger",
   "sideEffects": false,
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/es/index.js",
+  "types": "./lib/types/index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "exports": {
+    "import": "./lib/es/index.js",
+    "require": "./lib/cjs/index.js",
+    "types": "./lib/types/index.d.ts"
   },
   "files": [
     "lib"

@@ -1,11 +1,9 @@
 {
   "extends": "../../tsconfig.base.node.json",
   "include": ["src"],
-  "compileOnSave": true,
   "compilerOptions": {
-    "outDir": "lib",
-    "preserveSymlinks": true,
-    "declaration": true,
-    "declarationMap": true
+    "lib": ["dom"],
+    "module": "ESNext",
+    "moduleResolution": "node"
   }
 }

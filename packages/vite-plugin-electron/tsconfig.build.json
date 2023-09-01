@@ -1,11 +1,14 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": ["src","vite-plugin-electron.d.ts"],
-  "compilerOptions": {
-    "outDir": "lib",
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true
-  },
-  "exclude": ["node_modules", "lib", "test/**/*", "*.spec.ts"]
+  "files": [],
+  "references": [
+    {
+      "path": "tsconfig.prod.cjs.json"
+    },
+    {
+      "path": "tsconfig.prod.es.json"
+    },
+    {
+      "path": "tsconfig.prod.types.json"
+    }
+  ]
 }

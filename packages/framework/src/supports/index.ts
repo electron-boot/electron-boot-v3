@@ -7,4 +7,6 @@ export * from './service/ipc.service';
 export * from './service/lifecycle.service';
 export * from './service/event.service';
 export * from './service/socket.service';
+export * from './service/state.service';
+export * from './module.loader';
 export * from './resolver.factory.manager';

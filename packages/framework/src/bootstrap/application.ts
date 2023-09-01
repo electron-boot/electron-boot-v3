@@ -14,6 +14,7 @@ import defaultConfig from '../config/config.default';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { EventService } from '../supports/service/event.service';
 import { IApplicationContext } from '../interface/context/application.context.interface';
+import { StateService } from '../supports';
 let stepIdx = 1;
 export class Application {
   protected globalOptions: Partial<BootstrapOptions> = {};
@@ -54,6 +55,7 @@ export class Application {
     applicationContext.register(SocketService);
     applicationContext.register(LifecycleService);
     applicationContext.register(EventService);
+    applicationContext.register(StateService);
 
     this.printStepDebugInfo('Binding preload module');
 
@@ -101,6 +103,9 @@ export class Application {
     // merge config
     configService.load();
     this.logger.debug('[core]: Current config = %j', configService.getConfiguration());
+
+    // init state
+    await applicationContext.getAsync(StateService);
 
     return applicationContext;
   }

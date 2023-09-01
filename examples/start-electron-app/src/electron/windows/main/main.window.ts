@@ -1,5 +1,5 @@
 import { Init, Singleton } from '@electron-boot/framework';
-import { Config } from '@electron-boot/framework/src';
+import { Autowired, StateService } from '@electron-boot/framework';
 
 export interface IWindowCreationOptions {
   width?: number;
@@ -13,8 +13,11 @@ declare module '@electron-boot/framework' {
 
 @Singleton()
 export default class MainWindow {
-  @Config('mainWindow')
-  config: IWindowCreationOptions;
+  @Autowired()
+  stateService: StateService;
+  constructor() {
+    console.log(this.stateService);
+  }
   @Init()
   init() {}
 }

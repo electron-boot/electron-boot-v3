@@ -1,10 +1,9 @@
 {
   "extends": "../../tsconfig.base.node.json",
-  "include": ["src","framework.d.ts"],
+  "include": ["src"],
   "compilerOptions": {
-    "outDir": "dist",
-    "preserveSymlinks": true,
-    "declaration": true,
-    "declarationMap": true
+    "lib": ["dom"],
+    "module": "ESNext",
+    "moduleResolution": "node"
   }
 }

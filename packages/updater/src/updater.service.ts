@@ -1,11 +1,11 @@
 import { Config, Init, Singleton } from '@electron-boot/framework';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { AutoUpdate } from './interface';
-import * as events from 'events';
+import { EventEmitter } from 'node:events';
 import { AppUpdater, autoUpdater } from 'electron-updater';
 
 @Singleton()
-export class UpdaterService extends events {
+export class UpdaterService extends EventEmitter {
   private isReady = false;
 
   private logger: ILogger = LoggerFactory.getLogger(UpdaterService);

@@ -1,4 +1,4 @@
-import * as pm from 'picomatch';
+import pm from 'picomatch';
 import { Singleton } from '../../decorators/singleton.decorator';
 import { Autowired } from '../../decorators/autowired.decorator';
 import { DecoratorName, DecoratorUtil } from '../../utils/decorator.util';

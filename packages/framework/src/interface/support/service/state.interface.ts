@@ -45,10 +45,6 @@ export interface Options<T extends Record<string, any>> {
   encryptData?: EncryptData;
   decryptData?: DecryptData;
 }
-export interface Adapter<T> {
-  read: () => Promise<T | null>;
-  write: (data: T) => Promise<void>;
-}
 export type OnChangeCallback<T> = (newValue: Readonly<T>, oldValue: Readonly<T>) => void;
 export type Unsubscribe = () => EventEmitter;
 export type Serialize<T> = (value: T) => string;

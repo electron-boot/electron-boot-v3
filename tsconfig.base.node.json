@@ -2,9 +2,9 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "lib": ["ES2022","esnext.decorators"],
-    "module": "commonjs",
+    "inlineSourceMap": false,
+    "declaration": false,
     "target": "ES2022",
-    "moduleResolution": "node",
     "types": ["node"]
   }
 }
