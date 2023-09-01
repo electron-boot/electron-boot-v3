@@ -1,6 +1,6 @@
 {
   "name": "@electron-boot/framework",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "fast development framework for electron",
   "main": "./lib/cjs/index.js",
   "module": "./lib/es/index.js",

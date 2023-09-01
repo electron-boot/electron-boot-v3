@@ -1,5 +1,11 @@
 # @electron-boot/vite-plugin-electron
 
+## 2.0.1
+
+### Patch Changes
+
+- fix
+
 ## 2.0.0
 
 ### Major Changes
