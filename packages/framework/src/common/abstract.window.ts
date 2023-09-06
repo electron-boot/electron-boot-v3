@@ -1,16 +1,11 @@
 import { BrowserWindow } from 'electron';
-import { LoggerFactory } from '@electron-boot/logger/src';
-import { WindowReadyState } from '../enums/enums';
-
-export abstract class AbstractWindow {
-  protected logger = LoggerFactory.getLogger(this);
+import { EventEmitter } from 'events';
+import { ILogger } from '@electron-boot/logger';
+export abstract class AbstractWindow extends EventEmitter {
+  protected abstract logger: ILogger;
   protected _id: number;
   protected _win: BrowserWindow;
-  protected readyState = WindowReadyState.NONE;
-  protected abstract windowControlHeightStateStorageKey: string;
-  get isReady() {
-    return this.readyState === WindowReadyState.READY;
-  }
+
   send(channel: string, ...args: any[]): void {
     if (this._win) {
       if (this._win.isDestroyed() || this._win.webContents.isDestroyed()) {
@@ -24,6 +19,7 @@ export abstract class AbstractWindow {
       }
     }
   }
+
   close(): void {
     this._win?.close();
   }

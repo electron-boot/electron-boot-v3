@@ -4,7 +4,7 @@ import { EnvironmentService } from './environment.service';
 import { Autowired } from '../../decorators/autowired.decorator';
 import { Destroy, Init } from '../../decorators/definition.decorator';
 import { extend } from '../../utils/object.util';
-import { TypesUtil } from '../../utils/types.util';
+import { isFunction } from '../../utils/types.util';
 import { IApplicationContext } from '../../interface/context/application.context.interface';
 import { app } from 'electron';
 
@@ -97,8 +97,8 @@ export class ConfigService {
     const defaultSetLength = defaultSet.size;
     for (const [index, data] of [...defaultSet, ...environmentSet].entries()) {
       let config = data;
-      if (TypesUtil.isFunction(config)) {
-        config = config.call(config, this.appInfo, target);
+      if (isFunction(config)) {
+        config = config.call(config, this.appInfo, this.applicationContext);
       }
       if (!config) {
         continue;

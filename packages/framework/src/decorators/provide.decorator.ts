@@ -1,9 +1,10 @@
 import { ClassDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { Scope } from '../enums/enums';
 import { DecoratorManager } from './decorator.manager';
-import { TypesUtil } from '../utils/types.util';
-import { camelCase } from '../utils/string.util';
+import { isMetadataObject } from '../utils/types.util';
+import { camelCase } from 'lodash-es';
 import { Identifier } from '../interface/common';
+import { ObjectBeanFactory } from '../beans/support/object.bean.factory';
 export interface ProviderOptions {
   /**
    * identifier
@@ -58,12 +59,12 @@ export interface ProvideDecorator {
 }
 export const Provide = DecoratorManager.createDecorator((target, context: DecoratorContext, identifier: Identifier, scope: Scope) => {
   let options: ProviderOptions;
-  if (TypesUtil.isMetadataObject(identifier)) {
+  if (isMetadataObject(identifier)) {
     options = identifier as ProviderOptions;
   } else {
     options = { identifier, scope };
   }
-  const beanDefinition = DecoratorManager.getBeanDefinition(context, DecoratorManager.classBeanDefinition(context));
+  const beanDefinition = DecoratorManager.getBeanDefinition(context, ObjectBeanFactory.classBeanDefinition(context));
   if (options.identifier) {
     beanDefinition.alias.push(options.identifier);
   }

@@ -1,12 +1,11 @@
 import { Kind, Scope } from '../../enums/enums';
 import { IObjectBeanDefinition } from '../../interface/beans/definition/object.bean.definition';
 import { IObjectCreatorDefinition } from '../../interface/beans/definition/object.creator.definition';
-import { generateUUID } from '../../utils/string.util';
-import { DecoratorManager } from '../../utils';
 import { Identifier } from '../../interface/common';
+import { DecoratorManager } from '../../decorators/decorator.manager';
 
 export abstract class ObjectBeanDefinition implements IObjectBeanDefinition {
-  id: string = generateUUID();
+  id: string;
   abstract kind: Kind;
   decoratorMetadataObject: DecoratorMetadataObject;
   fieldsMerge = false;

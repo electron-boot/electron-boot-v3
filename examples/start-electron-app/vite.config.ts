@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import electron from '@electron-boot/vite-plugin-electron';
+import { electron } from '@electron-boot/vite-plugin-electron';
 import { rmSync } from 'fs';
 import { resolve } from 'path';
 

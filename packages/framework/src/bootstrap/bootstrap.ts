@@ -1,25 +1,24 @@
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { BootstrapOptions } from '../interface/bootstrap/bootstrap.interface';
 import { Application } from './application';
-import * as process from 'process';
 import { IApplicationContext } from '../interface/context/application.context.interface';
 
 export class Bootstrap {
   protected static application: Application;
   protected static configured = false;
   protected static logger: ILogger = LoggerFactory.getLogger(Bootstrap);
-  static configure(options: BootstrapOptions = {}): Bootstrap {
+  public static configure(options: BootstrapOptions = {}): Bootstrap {
     this.configured = true;
     this.getApplication().configure(options);
     return this;
   }
-  static getApplication(): Application {
+  public static getApplication(): Application {
     if (!this.application) {
       this.application = new Application();
     }
     return this.application;
   }
-  static reset() {
+  public static reset() {
     this.configured = false;
     this.application = null;
   }
@@ -27,7 +26,7 @@ export class Bootstrap {
   /**
    * run application
    */
-  static async run() {
+  public static async run() {
     if (!this.configured) {
       this.configure();
     }
@@ -61,7 +60,7 @@ export class Bootstrap {
   /**
    * stop application
    */
-  static async stop() {
+  public static async stop() {
     await this.getApplication().stop();
     process.off('uncaughtException', this.uncaughtExceptionHandler);
     process.off('unhandledRejection', this.unhandledRejectionHandler);
@@ -119,7 +118,7 @@ export class Bootstrap {
     this.logger.error(err);
   }
 
-  static getApplicationContext(): IApplicationContext {
+  public static getApplicationContext(): IApplicationContext {
     return this.getApplication().getApplicationContext();
   }
 }

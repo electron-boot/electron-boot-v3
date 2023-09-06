@@ -1,5 +1,6 @@
-import { transport as Transport } from 'winston';
-import { ColorizeOptions as WinstonColorizeOptions } from 'logform';
+import { transport as Transport, Logform } from 'winston';
+import * as winston from 'winston';
+import { GeneralDailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
 
 export type Level = 'all' | 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'none' | 'ALL' | 'TRACE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'NONE';
 export type LoggerContextFormat = (info: LoggerTransformableInfo, logger?: IGenericLogger) => string;
@@ -75,7 +76,7 @@ export interface LoggerProperties {
   // 输出文件
   FILE_NAME?: string;
 }
-export type ColorizeOptions = WinstonColorizeOptions;
+export type ColorizeOptions = Logform.ColorizeOptions;
 export interface ConsoleAppenderOptions {
   // 当前输出的类型
   type: 'Console';
@@ -86,16 +87,15 @@ export interface ConsoleAppenderOptions {
   // 格式化
   pattern?: string;
 }
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export interface FileAppenderOptions {
   // 文件类型
   type: 'File';
+  // pattern template
+  pattern?: string;
   // 日志样式
   format?: LoggerContextFormat;
-  // 格式化
-  pattern?: string;
-  // 日志文件名
-  fileName?: string;
 }
 
 export interface RotateFileAppenderOptions {
@@ -105,20 +105,6 @@ export interface RotateFileAppenderOptions {
   format?: LoggerContextFormat;
   // 格式化
   pattern?: string;
-  // 日志文件名
-  fileName?: string;
-  // 文件最大存储数量
-  maxFiles?: string;
-  // 文件存储最大大小
-  maxSize?: string;
-  // winston日志文件日期样式
-  datePattern?: string;
-  // 是否对存档日志近战gzip
-  zippedArchive?: boolean;
-  // 日志的行尾字符串
-  eol?: string;
-  // A directory of the audit file with absolute path
-  auditFileDir?: string;
 }
 
 export type LoggerTransportOptions = ConsoleAppenderOptions | FileAppenderOptions | RotateFileAppenderOptions;

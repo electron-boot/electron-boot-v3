@@ -1,10 +1,11 @@
 import { DynamicModule, Provider } from '../interface/decorator/metadata.interface';
-import { TypesUtil } from '../utils/types.util';
+import { isClass, isPromise } from '../utils/types.util';
 import { DecoratorName, DecoratorManager } from '../decorators/decorator.manager';
 import { Scope } from '../enums/enums';
 import { ConfigService } from './service/config.service';
 import { IApplicationContext } from '../interface/context/application.context.interface';
 import { Type } from '../interface/common';
+import { ObjectBeanFactory } from '../beans/support/object.bean.factory';
 
 export class ModuleLoader {
   private loaded: WeakMap<any, boolean> = new WeakMap();
@@ -16,13 +17,13 @@ export class ModuleLoader {
   load(module: Type | DynamicModule | Promise<DynamicModule>) {
     if (this.loaded.get(module)) return;
     let moduleInfo: DynamicModule;
-    if (TypesUtil.isPromise(module)) {
+    if (isPromise(module)) {
       return (module as Promise<DynamicModule>).then(m => this.load(m));
     }
-    if (TypesUtil.isClass(module)) {
+    if (isClass(module)) {
       moduleInfo = DecoratorManager.getMetadata(<Type>module, DecoratorName.MODULE);
       if (!moduleInfo) {
-        const beanDefinition = DecoratorManager.getBeanDefinition(module as Type, DecoratorManager.classBeanDefinition(module));
+        const beanDefinition = DecoratorManager.getBeanDefinition(module as Type, ObjectBeanFactory.classBeanDefinition(module));
         beanDefinition.scope = Scope.Singleton;
         beanDefinition.target = module as Type;
         beanDefinition.save();
@@ -42,7 +43,7 @@ export class ModuleLoader {
   }
 
   bindModuleClass(clazz: Type) {
-    const beanDefinition = DecoratorManager.getBeanDefinition(clazz, DecoratorManager.classBeanDefinition(clazz));
+    const beanDefinition = DecoratorManager.getBeanDefinition(clazz, ObjectBeanFactory.classBeanDefinition(clazz));
     beanDefinition.scope = Scope.Singleton;
     beanDefinition.target = clazz;
     beanDefinition.save();
@@ -60,7 +61,7 @@ export class ModuleLoader {
 
   addProviders(providers: Array<Provider<any>> = []) {
     for (const provider of providers) {
-      if (TypesUtil.isClass(provider)) {
+      if (isClass(provider)) {
         this.context.registerClass(undefined, <Type>provider);
       } else if ('class' in provider) {
         this.context.registerClass(provider.identifier, provider.class);

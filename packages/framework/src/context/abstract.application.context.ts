@@ -1,6 +1,6 @@
-import { EventEmitter } from 'node:events';
+import { EventEmitter } from 'events';
 import { ResolverFactoryManager } from '../supports/resolver.factory.manager';
-import { TypesUtil } from '../utils/types.util';
+import { isClass, isFunction, isIdentifier, isPlainObject } from '../utils/types.util';
 import { extend } from '../utils/object.util';
 import { Kind, ObjectLifeCycle, Scope } from '../enums/enums';
 import { DecoratorManager } from '../decorators/decorator.manager';
@@ -15,6 +15,7 @@ import { IFactoryBeanDefinition } from '../interface/beans/definition/factory.be
 import { GetOptions } from '../interface/beans/definition/bean.factory';
 import { IApplicationContext } from '../interface/context/application.context.interface';
 import { Identifier } from '../interface/common';
+import { ObjectBeanFactory } from '../beans/support/object.bean.factory';
 
 export abstract class AbstractApplicationContext implements IApplicationContext {
   private readonly _parent: IApplicationContext;
@@ -56,10 +57,10 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
   register<T>(target: T, options?: Partial<IObjectBeanDefinition>): void;
   register<T>(identifier: Identifier, target: T, options?: Partial<IObjectBeanDefinition>): void;
   register(identifier: any, target: any, options?: Partial<IObjectBeanDefinition>): void {
-    if (TypesUtil.isClass(identifier)) return this.registerClass(undefined, identifier, target);
-    if (TypesUtil.isFunction(identifier)) return this.registerFactory(undefined, identifier, target);
-    if (TypesUtil.isClass(target)) return this.registerClass(identifier, target, options);
-    if (TypesUtil.isFunction(target)) return this.registerFactory(identifier, target, options);
+    if (isClass(identifier)) return this.registerClass(undefined, identifier, target);
+    if (isFunction(identifier)) return this.registerFactory(undefined, identifier, target);
+    if (isClass(target)) return this.registerClass(identifier, target, options);
+    if (isFunction(target)) return this.registerFactory(identifier, target, options);
     return this.registerObject(identifier, target);
   }
 
@@ -88,7 +89,7 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
   }
 
   registerFactory(identifier: Identifier, target: any, options?: Partial<IObjectBeanDefinition>): void {
-    if (TypesUtil.isFunction(target)) {
+    if (isFunction(target)) {
       if (!identifier && !DecoratorManager.isFactory(target)) {
         return;
       }
@@ -102,8 +103,8 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
   }
 
   registerClass(identifier: Identifier, target: any, options?: Partial<IObjectBeanDefinition>): void {
-    if (TypesUtil.isClass(target)) {
-      const beanDefinition = DecoratorManager.getBeanDefinition(target, DecoratorManager.classBeanDefinition(target));
+    if (isClass(target)) {
+      const beanDefinition = DecoratorManager.getBeanDefinition(target, ObjectBeanFactory.classBeanDefinition(target));
       if (identifier) {
         beanDefinition.alias.push(identifier);
       }
@@ -113,9 +114,9 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
   }
 
   registerObject(identifier: any, target?: any, replace?: boolean): void {
-    if (!TypesUtil.isPlainObject(target) && target.constructor && TypesUtil.isClass(target.constructor)) {
+    if (!isPlainObject(target) && target.constructor && isClass(target.constructor)) {
       const definitionTarget = target.constructor;
-      const beanDefinition = DecoratorManager.getBeanDefinition(definitionTarget, DecoratorManager.classBeanDefinition(definitionTarget));
+      const beanDefinition = DecoratorManager.getBeanDefinition(definitionTarget, ObjectBeanFactory.classBeanDefinition(definitionTarget));
       if (!DecoratorManager.isProvider(definitionTarget)) {
         beanDefinition.scope = Scope.Singleton;
       }
@@ -147,7 +148,7 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
   get<T>(identifier: any, args?: any[], options?: GetOptions): T {
     args = args ?? [];
     options = options ?? { originName: identifier };
-    if (!TypesUtil.isIdentifier(identifier)) {
+    if (!isIdentifier(identifier)) {
       options.originName = identifier?.name;
       identifier = DecoratorManager.getBeanDefinition(identifier)?.id;
     }
@@ -169,7 +170,7 @@ export abstract class AbstractApplicationContext implements IApplicationContext 
   async getAsync<T>(identifier: any, args?: any[], options?: GetOptions): Promise<T> {
     args = args ?? [];
     options = options ?? { originName: identifier };
-    if (!TypesUtil.isIdentifier(identifier)) {
+    if (!isIdentifier(identifier)) {
       options.originName = identifier.name;
       identifier = DecoratorManager.getBeanDefinition(identifier).id;
     }

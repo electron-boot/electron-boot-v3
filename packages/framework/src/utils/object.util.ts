@@ -1,4 +1,4 @@
-import { TypesUtil } from './types.util';
+import { isPlainObject } from './types.util';
 
 export function isSpecificValue(val: any): boolean {
   return val instanceof Buffer || val instanceof Date || val instanceof RegExp ? true : false;
@@ -126,8 +126,8 @@ export function simpleExtend(target: any, ...sources: any[]): any {
       src = target[name];
       copy = options[name];
       if (target === copy) continue;
-      if (deep && copy && TypesUtil.isPlainObject(copy)) {
-        clone = src && TypesUtil.isPlainObject(src) ? src : {};
+      if (deep && copy && isPlainObject(copy)) {
+        clone = src && isPlainObject(src) ? src : {};
         target[name] = extend(deep, clone, copy);
       } else if (typeof copy !== 'undefined') {
         target[name] = copy;

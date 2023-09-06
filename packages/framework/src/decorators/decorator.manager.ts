@@ -1,13 +1,11 @@
 import { CreateDecoratorCallBack, DecoratorTarget, ModuleStore } from '../interface/decorator/decorators.interface';
 import { Decorator } from '../interface/common';
 import { SymbolMetadata } from '../utils/symbol.util';
-import { TypesUtil } from '../utils/types.util';
 import { FieldsDefinition } from '../beans/definition/fields.definition';
 import { IObjectBeanDefinition } from '../interface/beans/definition/object.bean.definition';
 import { IClassBeanDefinition } from '../interface/beans/definition/class.bean.definition';
 import { FactoryInfoDefinition } from '../interface/beans/definition/factory.bean.info.definition';
-import { IFactoryBeanDefinition } from '../interface';
-import { ObjectBeanFactory } from '../beans/support/object.bean.factory';
+import { RuntimeException } from '../errors';
 
 export class DecoratorName {
   static APPLICATION_CONTEXT = Symbol('application_context');
@@ -114,15 +112,19 @@ export class DecoratorManager implements ModuleStore {
     return this.getDecoratorDataMap(this.getDecoratorMetadataObject(target))?.get(decorator);
   }
 
-  static classBeanDefinition(target: any): IClassBeanDefinition {
-    if (this.isProvider(target)) return;
-    return ObjectBeanFactory.classBeanDefinition(target);
-  }
-  static factoryBeanDefinition(target: any): IFactoryBeanDefinition {
-    if (this.isProvider(target)) return;
-    return ObjectBeanFactory.factoryBeanDefinition(target);
-  }
-  static saveBeanDefinition(target: DecoratorTarget, beanDefinition: IObjectBeanDefinition) {
+  static saveBeanDefinition(beanDefinition: IObjectBeanDefinition): void;
+  static saveBeanDefinition(target: DecoratorTarget, beanDefinition: IObjectBeanDefinition): void;
+  static saveBeanDefinition(target: any, beanDefinition?: IObjectBeanDefinition) {
+    if (arguments.length === 1) {
+      beanDefinition = target;
+      if (beanDefinition.decoratorMetadataObject) {
+        target = beanDefinition.decoratorMetadataObject;
+      } else if (beanDefinition.target) {
+        target = beanDefinition.target;
+      } else {
+        throw new RuntimeException('the `beanDefinition` not found target');
+      }
+    }
     this.saveMetadata(target, DecoratorName.BEAN, beanDefinition);
   }
   static getBeanDefinition<T extends IObjectBeanDefinition>(target: DecoratorTarget, defaultValue?: T): T {
@@ -156,19 +158,6 @@ export class DecoratorManager implements ModuleStore {
   static isProvider(target: any): boolean {
     const beanDefinition = this.getBeanDefinition(target);
     return !!(beanDefinition && beanDefinition.id);
-  }
-  static FactoryWrapper(factoryInfo: FactoryInfoDefinition | Array<FactoryInfoDefinition>): void {
-    if (Array.isArray(factoryInfo)) {
-      factoryInfo.forEach(info => {
-        this.FactoryWrapper(info);
-      });
-    } else {
-      if (TypesUtil.isFunction(factoryInfo.provider)) {
-        this.saveMetadata(factoryInfo.provider, DecoratorName.FACTORY, factoryInfo);
-        const beanDefinition = this.factoryBeanDefinition(factoryInfo.provider);
-        DecoratorManager.saveBeanDefinition(factoryInfo.provider, beanDefinition);
-      }
-    }
   }
   static isFactory(target: any): boolean {
     const factoryInfo = this.getMetadata<FactoryInfoDefinition>(target, DecoratorName.FACTORY);

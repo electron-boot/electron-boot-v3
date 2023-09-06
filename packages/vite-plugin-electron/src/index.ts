@@ -1,5 +1,5 @@
 import { type Plugin } from 'vite';
-import { TscWatchClient } from 'tsc-watch/client';
+import { TscWatchClient } from 'tsc-watch';
 import { resolveServerUrl } from './utils';
 import { spawn } from 'child_process';
 import * as fs from 'fs';
@@ -9,7 +9,7 @@ export interface ElectronOptions {
   compiler?: string;
 }
 const watcher = new TscWatchClient();
-export default function electron(options: ElectronOptions = {}): Plugin[] {
+export function electron(options: ElectronOptions = {}): Plugin[] {
   const name = '@electron-boot/vite-plugin-electron';
   const tsconfigPath = options?.project ?? 'tsconfig.electron.json';
   if (!fs.existsSync(tsconfigPath)) {

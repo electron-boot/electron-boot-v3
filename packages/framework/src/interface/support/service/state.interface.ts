@@ -1,4 +1,4 @@
-import { EventEmitter } from 'node:events';
+import { EventEmitter } from 'events';
 import { Mode } from 'fs-extra';
 
 export interface Options<T extends Record<string, any>> {

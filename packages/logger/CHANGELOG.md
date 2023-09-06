@@ -1,5 +1,11 @@
 # @electron-boot/logger
 
+## 2.0.3
+
+### Patch Changes
+
+- change roolup to code build tool
+
 ## 2.0.1
 
 ### Patch Changes

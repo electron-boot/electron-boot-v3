@@ -1,6 +1,6 @@
-import { IConfig } from '../interface/config';
+import { defineConfig } from '../common/define.config';
 
-export default (): IConfig => {
+export default defineConfig(() => {
   return {
     logger: {},
     state: {
@@ -9,5 +9,5 @@ export default (): IConfig => {
         theme: 'default',
       },
     },
-  } as IConfig;
-};
+  };
+});

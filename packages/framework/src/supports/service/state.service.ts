@@ -1,36 +1,36 @@
 import { Singleton } from '../../decorators/singleton.decorator';
 import { Deserialize, OnChangeCallback, Options, Serialize, Unsubscribe } from '../../interface/support/service/state.interface';
 import { Init } from '../../decorators';
-import { EventEmitter } from 'node:events';
-import * as crypto from 'node:crypto';
-import * as path from 'node:path';
+import { EventEmitter } from 'events';
+import { pbkdf2Sync, createDecipheriv, randomBytes, createCipheriv } from 'crypto';
+import { resolve, dirname } from 'path';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
-import { assign, get, isEqual, isUndefined, isNull, set, unset } from 'lodash';
+import { assign, get, set, unset, isEqual, isUndefined, isNull } from 'lodash-es';
 import { app } from 'electron';
 import { ConfigService } from './config.service';
 import { outputFile, readFile, mkdirsSync } from 'fs-extra';
 
 @Singleton()
 export class StateService<T extends Record<string, any> = Record<string, unknown>> {
-  private logger: ILogger;
-  readonly #encryptionAlgorithm = 'aes-256-cbc';
+  private readonly logger: ILogger;
+  private readonly encryptionAlgorithm = 'aes-256-cbc';
   private initializing: Promise<void> | undefined = undefined;
   private closing: Promise<void> | undefined = undefined;
-  readonly #encryptionKey: string;
-  readonly #events: EventEmitter;
-  readonly #defaultValue: T;
-  readonly #options: Options<T>;
-  readonly #filename: string;
-  #data: T;
-  #lastSavedData: string;
-  configService: ConfigService;
+  readonly encryptionKey: string;
+  private readonly events: EventEmitter;
+  private readonly defaultValue: T;
+  private readonly options: Options<T>;
+  private readonly filename: string;
+  private data: T;
+  private lastSavedData: string;
+  private configService: ConfigService;
   private readonly decryptData = (data: string | Buffer): string => {
-    const encryptionKey = this.#encryptionKey;
+    const encryptionKey = this.encryptionKey;
     if (!encryptionKey) return data.toString();
     try {
       const initializationVector = data.slice(0, 16);
-      const password = crypto.pbkdf2Sync(encryptionKey, initializationVector.toString(), 10_000, 32, 'sha512');
-      const decipher = crypto.createDecipheriv(this.#encryptionAlgorithm, password, initializationVector);
+      const password = pbkdf2Sync(encryptionKey, initializationVector.toString(), 10_000, 32, 'sha512');
+      const decipher = createDecipheriv(this.encryptionAlgorithm, password, initializationVector);
       return Buffer.concat([decipher.update(Buffer.from(data.slice(17))), decipher.final()]).toString('utf8');
     } catch (e) {
       this.logger.warn(e);
@@ -39,12 +39,12 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
   };
 
   private readonly encryptData = (data: string | Buffer): string => {
-    const encryptionKey = this.#encryptionKey;
+    const encryptionKey = this.encryptionKey;
     if (!encryptionKey) return data.toString();
     try {
-      const initializationVector = crypto.randomBytes(16);
-      const password = crypto.pbkdf2Sync(encryptionKey, initializationVector.toString(), 10_000, 32, 'sha512');
-      const cipher = crypto.createCipheriv(this.#encryptionAlgorithm, password, initializationVector);
+      const initializationVector = randomBytes(16);
+      const password = pbkdf2Sync(encryptionKey, initializationVector.toString(), 10_000, 32, 'sha512');
+      const cipher = createCipheriv(this.encryptionAlgorithm, password, initializationVector);
       return Buffer.concat([initializationVector, Buffer.from(':'), cipher.update(Buffer.from(data)), cipher.final()]).toString('utf-8');
     } catch (e) {
       this.logger.warn(e);
@@ -56,7 +56,7 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
   private readonly serialize: Serialize<T> = value => JSON.stringify(value, undefined, 2);
   constructor(configService: ConfigService) {
     this.configService = configService;
-    this.#options = assign<Options<T>, Options<T>>(
+    this.options = assign<Options<T>, Options<T>>(
       {
         name: 'state',
         projectName: app.getName(),
@@ -66,16 +66,16 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
       },
       this.configService.getConfiguration('state')
     );
-    this.#defaultValue = assign<{}, T>({}, this.#options.defaults);
-    this.#events = new EventEmitter();
-    const fileExtension = this.#options.extension ? `.${this.#options.extension}` : '';
-    this.#filename = path.resolve(this.#options.cwd, 'state', `${this.#options.name}${fileExtension}`);
-    this.logger = LoggerFactory.getLogger(StateService.name + '#' + this.#options.name);
-    if (this.#options.encryptionKey) this.#encryptionKey = this.#options.encryptionKey;
-    if (this.#options.serialize) this.serialize = this.#options.serialize;
-    if (this.#options.deserialize) this.deserialize = this.#options.deserialize;
-    if (this.#options.encryptData) this.encryptData = this.#options.encryptData;
-    if (this.#options.decryptData) this.decryptData = this.#options.decryptData;
+    this.defaultValue = assign<{}, T>({}, this.options.defaults);
+    this.events = new EventEmitter();
+    const fileExtension = this.options.extension ? `.${this.options.extension}` : '';
+    this.filename = resolve(this.options.cwd, 'state', `${this.options.name}${fileExtension}`);
+    this.logger = LoggerFactory.getLogger(StateService.name + '#' + this.options.name);
+    if (this.options.encryptionKey) this.encryptionKey = this.options.encryptionKey;
+    if (this.options.serialize) this.serialize = this.options.serialize;
+    if (this.options.deserialize) this.deserialize = this.options.deserialize;
+    if (this.options.encryptData) this.encryptData = this.options.encryptData;
+    if (this.options.decryptData) this.decryptData = this.options.decryptData;
   }
 
   @Init()
@@ -88,14 +88,14 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
 
   private async doInit() {
     try {
-      const data = await readFile(this.#filename, 'utf-8');
+      const data = await readFile(this.filename, 'utf-8');
       const decryptData = this.decryptData(data);
       const deserializedData = this.deserialize(decryptData);
-      this.#data = assign({}, this.#defaultValue, deserializedData);
+      this.data = assign({}, this.defaultValue, deserializedData);
     } catch (e) {
       if (e?.code === 'ENOENT') {
         this.ensureDirectory();
-        this.#data = assign({}, this.#defaultValue);
+        this.data = assign({}, this.defaultValue);
         return;
       }
       this.logger.error(e);
@@ -103,7 +103,7 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
   }
 
   private ensureDirectory(): void {
-    mkdirsSync(path.dirname(this.#filename));
+    mkdirsSync(dirname(this.filename));
   }
 
   private async save(): Promise<void> {
@@ -120,13 +120,13 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
 
     let encryptData: string;
     try {
-      const serializedData = this.serialize(this.#data);
+      const serializedData = this.serialize(this.data);
       encryptData = this.encryptData(serializedData);
-      if (encryptData === this.#lastSavedData) {
+      if (encryptData === this.lastSavedData) {
         return;
       }
-      await outputFile(this.#filename, encryptData, { mode: this.#options.mode });
-      this.#events.emit('change');
+      await outputFile(this.filename, encryptData, { mode: this.options.mode });
+      this.events.emit('change');
     } catch (e) {
       this.logger.error(e);
     }
@@ -152,7 +152,7 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
   get<Key extends keyof T>(key: Key, defaultValue: Required<T>[Key]): Required<T>[Key];
   get<Key extends string, Value = unknown>(key: Exclude<Key, keyof T>, defaultValue?: Value): Value;
   get(key: string, defaultValue?: unknown): unknown {
-    return get(this.#data, key, defaultValue);
+    return get(this.data, key, defaultValue);
   }
 
   /**
@@ -189,17 +189,17 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
     let save = false;
     const obj = key;
     for (const [key, value] of Object.entries(obj)) {
-      const curValue = get(this.#data, key);
+      const curValue = get(this.data, key);
       if (isEqual(curValue, value)) {
         continue;
       }
       if (isUndefined(value) || isNull(value)) {
         if (!isUndefined(curValue)) {
-          unset(this.#data, key);
+          unset(this.data, key);
           save = true;
         }
       } else {
-        set(this.#data, key, value);
+        set(this.data, key, value);
         save = true;
       }
     }
@@ -215,9 +215,9 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
    */
   delete<Key extends keyof T>(key: Key): void;
   delete(key: string): void {
-    const curValue = get(this.#data, key);
+    const curValue = get(this.data, key);
     if (!isUndefined(curValue)) {
-      unset(this.#data, key);
+      unset(this.data, key);
       this.save();
     }
   }
@@ -228,7 +228,7 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
    * This resets known items to their default values, if defined by the `defaults`
    */
   clear(): void {
-    this.#data = assign({}, this.#defaultValue);
+    this.data = assign({}, this.defaultValue);
     this.save();
   }
 
@@ -242,9 +242,9 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
     }
     if (typeof callback !== 'function') throw new TypeError(`Expected \`callback\` to be of type \`function\`, got ${typeof callback}`);
     if (key) {
-      return this.changeHandler(() => get(this.#data, key), callback);
+      return this.changeHandler(() => get(this.data, key), callback);
     }
-    return this.changeHandler(() => this.#data, callback);
+    return this.changeHandler(() => this.data, callback);
   }
 
   private changeHandler<T>(getter: () => T | undefined, callback: OnChangeCallback<T>): Unsubscribe;
@@ -260,7 +260,7 @@ export class StateService<T extends Record<string, any> = Record<string, unknown
       currentValue = newValue;
       callback.call(this, newValue, oldValue);
     };
-    this.#events.on('change', onChange);
-    return () => this.#events.removeListener('change', onChange);
+    this.events.on('change', onChange);
+    return () => this.events.removeListener('change', onChange);
   }
 }

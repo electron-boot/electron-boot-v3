@@ -1,5 +1,6 @@
 import { ClassMethodDecoratorFunction } from '../interface/decorator/decorators.interface';
 import { DecoratorManager } from './decorator.manager';
+import { ObjectBeanFactory } from '../beans/support/object.bean.factory';
 export interface ConstructDecorator {
   /**
    * init decorator
@@ -21,7 +22,7 @@ export interface ConstructDecorator {
   (target: any, context: ClassMethodDecoratorContext): void;
 }
 export const Construct: ConstructDecorator = DecoratorManager.createDecorator((target, context) => {
-  const beanDefinition = DecoratorManager.getBeanDefinition(context, DecoratorManager.classBeanDefinition(context));
+  const beanDefinition = DecoratorManager.getBeanDefinition(context, ObjectBeanFactory.classBeanDefinition(context));
   beanDefinition.constructMethod = context.name.toString();
   beanDefinition.save();
 });
@@ -46,7 +47,7 @@ export interface InitDecorator {
   (target: any, context: ClassMethodDecoratorContext): void;
 }
 export const Init: InitDecorator = DecoratorManager.createDecorator((target, context) => {
-  const beanDefinition = DecoratorManager.getBeanDefinition(context, DecoratorManager.classBeanDefinition(context));
+  const beanDefinition = DecoratorManager.getBeanDefinition(context, ObjectBeanFactory.classBeanDefinition(context));
   beanDefinition.initMethod = context.name.toString();
   beanDefinition.save();
 });
@@ -72,7 +73,7 @@ export interface DestroyDecorator {
   (target: any, context: ClassMethodDecoratorContext): void;
 }
 export const Destroy: DestroyDecorator = DecoratorManager.createDecorator((target, context) => {
-  const beanDefinition = DecoratorManager.getBeanDefinition(context, DecoratorManager.classBeanDefinition(context));
+  const beanDefinition = DecoratorManager.getBeanDefinition(context, ObjectBeanFactory.classBeanDefinition(context));
   beanDefinition.destroyMethod = context.name.toString();
   beanDefinition.save();
 });

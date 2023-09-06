@@ -2,7 +2,7 @@ import pm from 'picomatch';
 import { Singleton } from '../../decorators/singleton.decorator';
 import { Autowired } from '../../decorators/autowired.decorator';
 import { DecoratorName, DecoratorManager } from '../../decorators/decorator.manager';
-import { TypesUtil } from '../../utils/types.util';
+import { isAsyncFunction } from '../../utils/types.util';
 import { AspectMetadata, IMethodAspect, JoinPoint } from '../../interface/support/support.interface';
 import { IApplicationContext } from '../../interface/context/application.context.interface';
 import { ClassType } from '../../interface/common';
@@ -69,7 +69,7 @@ export class AspectService {
   public interceptPrototypeMethod(Clz: ClassType, methodName: string | symbol, aspectObject: IMethodAspect | (() => IMethodAspect)) {
     const originMethod = Clz.prototype[methodName];
 
-    if (TypesUtil.isAsyncFunction(Clz.prototype[methodName])) {
+    if (isAsyncFunction(Clz.prototype[methodName])) {
       Clz.prototype[methodName] = async function (...args: any[]) {
         let error: any, result: any;
         const newProceed = (...args: any[]) => {

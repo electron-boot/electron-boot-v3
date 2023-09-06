@@ -13,9 +13,10 @@
   },
   "scripts": {
     "clear:lib": "rimraf packages/*/{lib,dist}",
+    "clear:dependencies": "rimraf packages/*/node_modules && rimraf node_modules",
     "clear": "rimraf packages/*/{lib,dist,node_modules} && rimraf node_modules",
     "test": "jest",
-    "build": "tsc -b -v packages",
+    "build:packages": "pnpm --filter \"./packages/**\" run build",
     "changeset:beta": "changeset pre enter beta",
     "changeset": "changeset",
     "changeset:pro": "changeset pre exit",

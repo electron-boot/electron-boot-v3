@@ -1,5 +1,4 @@
-import { format, transports } from 'winston';
-import { Format } from 'logform';
+import { format, Logform, transports } from 'winston';
 import {
   LoggerFactoryConfig,
   ILogger,
@@ -10,11 +9,14 @@ import {
   LoggerTransportOptions,
   ColorizeOptions,
   IGenericLogger,
+  FileAppenderOptions,
+  RotateFileAppenderOptions,
 } from './interface';
 import { Transport } from './winston/logger';
 import { formatLevel, template } from './utils';
 import { GenericLogger } from './logger';
-import { ConsoleTransportOptions } from 'winston/lib/winston/transports';
+import { ConsoleTransportOptions, FileTransportOptions } from 'winston/lib/winston/transports';
+import DailyRotateFile, { DailyRotateFileTransportOptions } from 'winston-daily-rotate-file';
 
 export class LoggerFactory {
   // 自定义日志信息处理器
@@ -89,12 +91,28 @@ export class LoggerFactory {
     this.transports.set(name, consoleTransport);
   }
 
+  private createFileTransport(name: string, config: FileAppenderOptions) {
+    const fileTransport = new transports.File({
+      ...config,
+      format: this.getDefaultFormat(config),
+    } as FileTransportOptions);
+    this.transports.set(name, fileTransport);
+  }
+
+  private createRotateFileTransport(name: string, config: RotateFileAppenderOptions) {
+    const rotateFileTransport = new DailyRotateFile({
+      ...config,
+      format: this.getDefaultFormat(config),
+    } as DailyRotateFileTransportOptions);
+    this.transports.set(name, rotateFileTransport);
+  }
+
   /**
    * 获取日志格式化
    * @param options
    * @private
    */
-  private getDefaultFormat(options?: LoggerTransportOptions): Format {
+  private getDefaultFormat(options?: LoggerTransportOptions): Logform.Format {
     if (options?.type === 'Console') {
       if (typeof options.colorize === 'undefined') {
         options.colorize = true;
@@ -137,7 +155,7 @@ export class LoggerFactory {
   private getDefaultPrintFormat(options?: LoggerTransportOptions) {
     return function (info: LoggerTransformableInfo) {
       const pattern = options && options.pattern ? options.pattern : '${timestamp} ${LEVEL} ${pid} ${labelText}${message}';
-      return template.render(pattern, info);
+      return template(pattern, info);
     };
   }
 
@@ -203,8 +221,12 @@ export class LoggerFactory {
       case 'Console':
         this.createConsoleTransport(name, options);
         break;
-      default:
-        throw new Error(`transport type "${options.type}" not found`);
+      case 'File':
+        this.createFileTransport(name, options);
+        break;
+      case 'RotateFile':
+        this.createRotateFileTransport(name, options);
+        break;
     }
   }
 

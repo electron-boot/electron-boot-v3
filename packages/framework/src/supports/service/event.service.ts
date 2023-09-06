@@ -4,7 +4,7 @@ import { DecoratorName, DecoratorManager } from '../../decorators/decorator.mana
 import { ControllerMetadata, ActionMetadata } from '../../interface/decorator/metadata.interface';
 import { ILogger, LoggerFactory } from '@electron-boot/logger';
 import { DuplicateEventException } from '../../errors/exceptions/duplicate.router.exception';
-import { kebabCase } from '../../utils';
+import { kebabCase } from 'lodash-es';
 
 @Singleton()
 export class EventService {

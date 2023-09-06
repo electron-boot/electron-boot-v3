@@ -2,7 +2,7 @@ import { BootstrapOptions } from '../interface/bootstrap/bootstrap.interface';
 import { SocketService } from '../supports/service/socket.service';
 import { LifecycleService } from '../supports/service/lifecycle.service';
 import { DecoratorManager } from '../decorators/decorator.manager';
-import * as util from 'util';
+import { inspect } from 'util';
 import { GenericApplicationContext } from '../context/generic.application.context';
 import { ModuleLoader } from '../supports/module.loader';
 import { EnvironmentService } from '../supports/service/environment.service';
@@ -29,7 +29,7 @@ export class Application {
     this.printStepDebugInfo('Ready to create applicationContext');
 
     this.logger.debug('[framework]: start "initializeGlobalApplicationContext"');
-    this.logger.debug(`[framework]: bootstrap options = ${util.inspect(this.globalOptions)}`);
+    this.logger.debug(`[framework]: bootstrap options = ${inspect(this.globalOptions)}`);
 
     // new applicationContext
     const applicationContext = this.globalOptions.applicationContext ?? new GenericApplicationContext();

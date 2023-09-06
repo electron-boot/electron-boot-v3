@@ -1,5 +1,21 @@
 # @electron-boot/updater
 
+## 2.0.3
+
+### Patch Changes
+
+- change roolup to code build tool
+- Updated dependencies
+  - @electron-boot/framework@2.0.3
+  - @electron-boot/logger@2.0.3
+
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @electron-boot/framework@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes

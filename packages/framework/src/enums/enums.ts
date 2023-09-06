@@ -19,23 +19,3 @@ export enum ObjectLifeCycle {
   AFTER_INIT = 'afterObjectInit',
   BEFORE_DESTROY = 'beforeObjectDestroy',
 }
-export enum WindowReadyState {
-  /**
-   * This window has not loaded anything yet
-   * and this is the initial state of every
-   * window.
-   */
-  NONE,
-
-  /**
-   * This window is navigating, either for the
-   * first time or subsequent times.
-   */
-  NAVIGATING,
-
-  /**
-   * This window has finished loading and is ready
-   * to forward IPC requests to the web contents.
-   */
-  READY,
-}

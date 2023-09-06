@@ -1,4 +1,4 @@
-import { TypesUtil } from '../../utils/types.util';
+import { isAsyncFunction, isGeneratorFunction, isPromise } from '../../utils/types.util';
 import { UseWrongMethodException } from '../../errors/exceptions/use.wrong.method.exception';
 import { IObjectCreatorDefinition } from '../../interface/beans/definition/object.creator.definition';
 import { BeanDefinition } from '../../interface/beans/definition/bean.definition';
@@ -45,7 +45,7 @@ export abstract class ObjectCreatorDefinition implements IObjectCreatorDefinitio
     let instance: any;
     if (this.definition.constructMethod) {
       const fn = clazz[this.definition.constructMethod];
-      if (TypesUtil.isAsyncFunction(fn)) {
+      if (isAsyncFunction(fn)) {
         instance = await fn.apply(clazz, args);
       } else {
         instance = fn.apply(clazz, args);
@@ -60,11 +60,11 @@ export abstract class ObjectCreatorDefinition implements IObjectCreatorDefinitio
     const inst = obj;
     // after properties set then do init
     if (this.definition.initMethod && inst[this.definition.initMethod]) {
-      if (TypesUtil.isGeneratorFunction(inst[this.definition.initMethod]) || TypesUtil.isAsyncFunction(inst[this.definition.initMethod])) {
+      if (isGeneratorFunction(inst[this.definition.initMethod]) || isAsyncFunction(inst[this.definition.initMethod])) {
         throw new UseWrongMethodException('context.get', 'context.getAsync', this.definition.id);
       } else {
         const rt = inst[this.definition.initMethod].call(inst, ...args);
-        if (TypesUtil.isPromise(rt)) {
+        if (isPromise(rt)) {
           throw new UseWrongMethodException('context.get', 'context.getAsync', this.definition.id);
         }
       }
@@ -74,7 +74,7 @@ export abstract class ObjectCreatorDefinition implements IObjectCreatorDefinitio
     const inst = obj;
     if (this.definition.initMethod && inst[this.definition.initMethod]) {
       const initFn = inst[this.definition.initMethod];
-      if (TypesUtil.isAsyncFunction(initFn)) {
+      if (isAsyncFunction(initFn)) {
         await initFn.call(inst, ...args);
       } else {
         if (initFn.length === 1) {
@@ -95,7 +95,7 @@ export abstract class ObjectCreatorDefinition implements IObjectCreatorDefinitio
   async doDestroyAsync(obj: any, ...args: any[]): Promise<void> {
     if (this.definition.destroyMethod && obj[this.definition.destroyMethod]) {
       const fn = obj[this.definition.destroyMethod];
-      if (TypesUtil.isAsyncFunction(fn)) {
+      if (isAsyncFunction(fn)) {
         await fn.call(obj);
       } else {
         if (fn.length === 1) {

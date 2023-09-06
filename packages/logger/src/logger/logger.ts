@@ -2,11 +2,12 @@ import * as util from 'util';
 import { format } from 'winston';
 import { Transport, WinstonLogger } from '../winston/logger';
 import { IGenericChildLogger, IGenericContextLogger, IGenericLogger, Level, LoggerOptions } from '../interface';
-import { formatLevel, isPlainObject } from '../utils';
+import { formatLevel } from '../utils';
+import { isPlainObject } from 'lodash-es';
 import { ORIGIN_ARGS, ORIGIN_ERROR } from '../constant';
 import { displayCommonMessage, displayLabels } from '../fomat';
 
-const LogLevels = {
+export const LogLevels = {
   off: 0,
   error: 1,
   warn: 2,

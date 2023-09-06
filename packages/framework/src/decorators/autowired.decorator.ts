@@ -2,9 +2,10 @@ import { ClassFieldDecoratorFunction, ClassMethodDecoratorFunction, ProviderIden
 import { DecoratorName, DecoratorManager } from './decorator.manager';
 import { DecoratorNotValidException } from '../errors/exceptions/decorator.not.valid.exception';
 import { AutowiredFieldMetadata } from '../interface/decorator/metadata.interface';
-import { TypesUtil } from '../utils/types.util';
+import { isPrimitiveType } from '../utils/types.util';
 import { InjectMode } from '../enums/enums';
 import { IFieldDefinition } from '../interface/beans/definition/field.definition';
+import { ObjectBeanFactory } from '../beans/support/object.bean.factory';
 export interface AutowiredOptions {
   /**
    * The provider of the provider to Autowired.
@@ -86,13 +87,13 @@ export const Autowired: AutowiredDecorator = DecoratorManager.createDecorator((t
   }
 });
 export const saveAutowiredField = (context: ClassFieldDecoratorContext, metadata: IFieldDefinition) => {
-  const beanDefinition = DecoratorManager.getBeanDefinition(context, DecoratorManager.classBeanDefinition(context));
+  const beanDefinition = DecoratorManager.getBeanDefinition(context, ObjectBeanFactory.classBeanDefinition(context));
   const fieldDefinition = beanDefinition.fields.getField(context.name, metadata);
   fieldDefinition.metadata.static = context.static;
   fieldDefinition.metadata.private = context.private;
   fieldDefinition.metadata.access = context.access;
   if (fieldDefinition.metadata.provider) {
-    if (!TypesUtil.isPrimitiveType(fieldDefinition.metadata.provider) && DecoratorManager.isProvider(fieldDefinition.metadata.provider)) {
+    if (!isPrimitiveType(fieldDefinition.metadata.provider) && DecoratorManager.isProvider(fieldDefinition.metadata.provider)) {
       fieldDefinition.metadata.provider = DecoratorManager.getBeanDefinition(fieldDefinition.metadata.provider).id;
       fieldDefinition.metadata.injectMode = InjectMode.Class;
     }

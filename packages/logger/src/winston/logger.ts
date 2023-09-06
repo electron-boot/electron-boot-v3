@@ -1,10 +1,10 @@
 import { createLogger, Logger, transport } from 'winston';
 
-const EmptyLogger = createLogger().constructor as any;
+export const EmptyLogger = createLogger().constructor as any;
 
 export type Transport = transport;
 
-type WinstonInnerLogger = Omit<
+export type WinstonInnerLogger = Omit<
   Logger,
   | 'error'
   | 'warn'
